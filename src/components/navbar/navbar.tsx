@@ -26,7 +26,7 @@ const Navbar = () => {
   return (
     <nav
       className={cn(
-        'absolute bottom-1 left-1 right-1 h-16 p-2 rounded-3xl grid grid-cols-3 gap-2 bg-muted shadow'
+        'absolute bottom-2 left-2 right-2 h-14 p-2 rounded-xl grid grid-cols-3 gap-2 bg-muted shadow'
       )}
     >
       {links.map(({ text, to, isPrivate }) => {
@@ -36,8 +36,8 @@ const Navbar = () => {
             to={to}
             className={({ isActive }) =>
               cn(
-                'h-12 text-base px-1 rounded-2xl flex items-center justify-center transition-all duration-300 hover:font-medium',
-                isActive && 'bg-background rounded-2xl font-medium shadow',
+                'h-10 text-base px-1 rounded-md flex items-center justify-center transition-all duration-300 hover:font-medium',
+                isActive && 'bg-background font-medium shadow',
                 isPrivate && !isAuth && 'text-slate-400 pointer-events-none'
               )
             }
