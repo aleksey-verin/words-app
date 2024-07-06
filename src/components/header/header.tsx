@@ -3,9 +3,9 @@ import { buttonVariants } from '../ui/button'
 import { Menu } from './menu'
 
 const Header = () => {
-  const isAuth = false
+  const isAuth = true
   return (
-    <header className='absolute top-0 right-0 z-50 flex w-auto items-center justify-end pt-4 pr-4'>
+    <header className='absolute top-0 right-0 z-50 flex w-auto items-center justify-end pt-2 pr-2'>
       {isAuth ? (
         <Menu />
       ) : (
