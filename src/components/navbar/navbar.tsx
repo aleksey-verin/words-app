@@ -26,7 +26,7 @@ const Navbar = () => {
   return (
     <nav
       className={cn(
-        'absolute bottom-2 left-2 right-2 h-14 p-2 rounded-xl grid grid-cols-3 gap-2 bg-muted shadow'
+        'absolute bottom-2 left-2 right-2 p-2 rounded-xl grid grid-cols-3 gap-2 bg-muted shadow'
       )}
     >
       {links.map(({ text, to, isPrivate }) => {
