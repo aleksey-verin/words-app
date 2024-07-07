@@ -42,7 +42,7 @@ const SearchForm = ({
     },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const value = values.word.trim()
     const result = await requestWord(value)
     if (result) {
@@ -55,60 +55,12 @@ const SearchForm = ({
     form.reset()
   }
 
-  // const readClipboard = async (): Promise<string | undefined> => {
-  //   if (!navigator.clipboard) {
-  //     fallbackReadClipboard();
-  //     return;
-  //   }
-  //   try {
-  //     const text = await navigator.clipboard.readText()
-  //     console.log('text', text);
-  //     if (text) {
-  //       return text
-  //       // await onSubmit({ word: text })
-  //     }
-  //   } catch (err) {
-  //     console.error('Failed to read clipboard: ', err)
-  //   }
-  // }
-
-  // function fallbackReadClipboard(): string | undefined {
-  //   try {
-  //   console.log('fallback');
-  //   const textarea = document.createElement("textarea");
-  //   textarea.style.position = 'fixed';
-  //   textarea.style.opacity = '0';
-  //   document.body.appendChild(textarea);
-  //   textarea.focus();
-  //   textarea.select();
-  //   document.execCommand('paste');
-  //   document.body.removeChild(textarea);
-  //   const text = textarea.value;
-  //   console.log(text);
-  //   return text
-  //   } catch (err) {
-  //     console.error('Fallback failed to read clipboard', err);
-  //   }
-  // }
-
-  // const handlePaste = async () => {
-  //   const text = await readClipboard();
-  //   if (text) {
-  //     form.setValue('word', text);
-  //     onSubmit({ word: text });
-  //   } else {
-  //     console.log('no text found');
-  //   }
-  // };
-  
-    const handlePaste = async () => {
-      const text = await navigator.clipboard.readText();
-      console.log(text);
-      if (text) {
-        form.setValue('word', text);
-        onSubmit({ word: text });
-      }
+  const handlePaste = async () => {
+    const text = await navigator.clipboard.readText()
+    if (text) {
+      onSubmit({ word: text })
     }
+  }
 
   return (
     <Form {...form}>
@@ -131,6 +83,7 @@ const SearchForm = ({
                     size='sm'
                     variant='outline'
                     type='button'
+                    title='Paste from clipboard'
                     className='flex items-center justify-center h-10 rounded-full px-2'
                     onClick={handlePaste}
                   >
@@ -140,6 +93,7 @@ const SearchForm = ({
                     size='sm'
                     variant='outline'
                     type='submit'
+                    title='Search'
                     className='flex items-center justify-center h-10 rounded-full px-6'
                   >
                     <SearchIcon className='w-6 h-6 opacity-70' />
