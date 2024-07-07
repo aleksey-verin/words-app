@@ -4,13 +4,17 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from '@/providers/theme-provider'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { ROUTES } from '@/routes'
+import { NavLink } from 'react-router-dom'
+import { cn } from '@/lib/utils'
+
+const isAuth = true
 
 export function Menu() {
   const { theme, setTheme } = useTheme()
@@ -26,6 +30,16 @@ export function Menu() {
       <DropdownMenuContent className='w-56'>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <NavLink to={ROUTES.SEARCH} className={({ isActive }) => isActive ? 'font-medium' : 'opacity-80'}>
+          <DropdownMenuItem>Search for the meaning</DropdownMenuItem>
+        </NavLink>
+        <NavLink to={ROUTES.TRAINING} className={({ isActive }) => isActive ? 'font-medium' : 'opacity-80'}>
+        <DropdownMenuItem disabled={!isAuth}>Training</DropdownMenuItem>
+        </NavLink>
+        <NavLink to={ROUTES.WORDS} className={({ isActive }) => isActive ? 'font-medium' : 'opacity-80'}>
+        <DropdownMenuItem disabled={!isAuth}>My words</DropdownMenuItem>
+        </NavLink>
+        <DropdownMenuSeparator />
         <DropdownMenuItem className='flex flex-col gap-2'>
           <div className='flex w-full items-center'>
             Theme
@@ -37,7 +51,7 @@ export function Menu() {
               type='single'
               size='sm'
               value={theme}
-              className='w-full justify-between'
+              className={cn('w-full grid grid-cols-3')}
             >
               <ToggleGroupItem
                 value='light'
@@ -69,7 +83,6 @@ export function Menu() {
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           Log out
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

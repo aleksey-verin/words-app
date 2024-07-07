@@ -74,29 +74,29 @@ const SearchForm = ({
               <FormControl>
                 <div className='flex items-center justify-between gap-2'>
                   <Input
-                    type='search'
+                    type='text'
                     placeholder='Enter the word..'
                     {...field}
-                    className='text-base h-10 rounded-full flex-auto'
+                    className='text-base h-10 flex-auto'
                   />
                   <Button
                     size='sm'
                     variant='outline'
                     type='button'
                     title='Paste from clipboard'
-                    className='flex items-center justify-center h-10 rounded-full px-2'
+                    className='flex items-center justify-center h-10 px-2'
                     onClick={handlePaste}
                   >
-                    <ClipboardCopy className='w-6 h-6 opacity-70' />
+                    <ClipboardCopy className='w-5 h-5 opacity-70' />
                   </Button>
                   <Button
                     size='sm'
                     variant='outline'
                     type='submit'
                     title='Search'
-                    className='flex items-center justify-center h-10 rounded-full px-6'
+                    className='flex items-center justify-center h-10  px-6'
                   >
-                    <SearchIcon className='w-6 h-6 opacity-70' />
+                    <SearchIcon className='w-5 h-5 opacity-70' />
                   </Button>
                 </div>
               </FormControl>
