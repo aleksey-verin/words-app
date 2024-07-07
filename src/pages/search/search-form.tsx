@@ -14,12 +14,19 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { SearchIcon } from 'lucide-react'
+import { Word } from '@/data/types'
 
 const formSchema = z.object({
-  word: z.string().min(3).max(50),
+  word: z.string().min(2).max(50),
 })
 
-const SearchForm = ({setIsResult}:{setIsResult: (value: (prev: boolean) => boolean) => void}) => {
+async function requestWord(word: string) {
+  const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+  const data = await response.json() as Word[]
+  return data[0]
+}
+
+const SearchForm = ({setWord, setResult}:{setWord: (value: string) => void, setResult: (value: Word | null) => void}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,11 +34,17 @@ const SearchForm = ({setIsResult}:{setIsResult: (value: (prev: boolean) => boole
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
-    setIsResult((prev) => !prev)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const value = values.word.trim()
+    const result = await requestWord(value)
+    if (result) {
+      setResult(result)
+      setWord(result.word)
+    } else {
+      setResult(null)
+      setWord('No Definitions Found')
+    }
+    form.reset()
   }
 
   return (
@@ -45,14 +58,14 @@ const SearchForm = ({setIsResult}:{setIsResult: (value: (prev: boolean) => boole
               {/* <FormLabel>Username</FormLabel> */}
               <FormControl>
                 <div  className='flex items-center justify-between gap-2'>
-                <Input placeholder='Enter the word..' {...field} className='text-base h-10' />
-                <Button size='icon' variant='outline' type='submit' className='w-12'><SearchIcon className='opacity-70' /></Button>
+                <Input type='search' placeholder='Enter the word..' {...field} className='text-base h-10 rounded-full' />
+                <Button size='icon' variant='outline' type='submit' className='w-12 rounded-full'><SearchIcon className='opacity-70' /></Button>
                 </div>
               </FormControl>
               {/* <FormDescription>
                 This is your public display name.
               </FormDescription> */}
-              <FormMessage className='absolute left-0' />
+              <FormMessage className='absolute left-0 text-xs top-9' />
             </FormItem>
           )}
         />
