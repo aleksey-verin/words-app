@@ -37,7 +37,7 @@ const Navbar = () => {
             className={({ isActive }) =>
               cn(
                 'h-10 text-base px-1 rounded-md flex items-center justify-center transition-all duration-300 hover:font-medium',
-                isActive && 'bg-background font-medium shadow',
+                isActive && 'bg-background font-medium shadow-sm',
                 isPrivate && !isAuth && 'text-slate-400 pointer-events-none'
               )
             }

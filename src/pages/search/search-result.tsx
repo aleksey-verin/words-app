@@ -46,7 +46,7 @@ const SearchResult = ({ word, result }: { word: string; result: Word }) => {
                     <Button
                       variant={'outline'}
                       size={'icon'}
-                      className='float-right w-5 h-5'
+                      className='float-right w-5 h-5 ml-2'
                     >
                       <Plus className='w-3 h-3' />
                     </Button>
