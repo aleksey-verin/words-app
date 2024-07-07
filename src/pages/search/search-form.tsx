@@ -19,7 +19,7 @@ const formSchema = z.object({
   word: z.string().min(3).max(50),
 })
 
-const SearchForm = () => {
+const SearchForm = ({setIsResult}:{setIsResult: (value: (prev: boolean) => boolean) => void}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,6 +31,7 @@ const SearchForm = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
+    setIsResult((prev) => !prev)
   }
 
   return (
@@ -51,7 +52,7 @@ const SearchForm = () => {
               {/* <FormDescription>
                 This is your public display name.
               </FormDescription> */}
-              <FormMessage />
+              <FormMessage className='absolute left-0' />
             </FormItem>
           )}
         />
