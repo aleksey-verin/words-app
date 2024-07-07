@@ -19,6 +19,8 @@ const isAuth = true
 export function Menu() {
   const { theme, setTheme } = useTheme()
 
+  const activeNavLinkStyle = 'relative font-medium after:content-[""] after:absolute after:w-2 after:h-2 after:right-2 after:top-1/2 after:translate-y-[-50%] after:rounded-full after:bg-primary'
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -30,13 +32,13 @@ export function Menu() {
       <DropdownMenuContent className='w-56'>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <NavLink to={ROUTES.SEARCH} className={({ isActive }) => isActive ? 'font-medium' : 'opacity-80'}>
+        <NavLink to={ROUTES.SEARCH} className={({ isActive }) => isActive ? activeNavLinkStyle : 'opacity-80'}>
           <DropdownMenuItem>Search for the meaning</DropdownMenuItem>
         </NavLink>
-        <NavLink to={ROUTES.TRAINING} className={({ isActive }) => isActive ? 'font-medium' : 'opacity-80'}>
+        <NavLink to={ROUTES.TRAINING} className={({ isActive }) => isActive ? activeNavLinkStyle : 'opacity-80'}>
         <DropdownMenuItem disabled={!isAuth}>Training</DropdownMenuItem>
         </NavLink>
-        <NavLink to={ROUTES.WORDS} className={({ isActive }) => isActive ? 'font-medium' : 'opacity-80'}>
+        <NavLink to={ROUTES.WORDS} className={({ isActive }) => isActive ? activeNavLinkStyle : 'opacity-80'}>
         <DropdownMenuItem disabled={!isAuth}>My words</DropdownMenuItem>
         </NavLink>
         <DropdownMenuSeparator />
