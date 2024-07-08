@@ -2,7 +2,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
@@ -13,33 +12,60 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { ROUTES } from '@/routes'
 import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/utils'
+import { UserData } from '@/store/reducers/userAuthSlice'
 
 const isAuth = true
 
-export function Menu() {
+export function Menu({ user }: { user: UserData }) {
   const { theme, setTheme } = useTheme()
+  const { photoURL, displayName, email } = user
+  const userPhoto = photoURL ? photoURL : ''
+  const userShortName = displayName ? displayName[0].toUpperCase() : ''
 
-  const activeNavLinkStyle = 'relative font-medium after:content-[""] after:absolute after:w-2 after:h-2 after:right-2 after:top-1/2 after:translate-y-[-50%] after:rounded-full after:bg-primary'
+  const activeNavLinkStyle =
+    'relative font-medium after:content-[""] after:absolute after:w-2 after:h-2 after:right-2 after:top-1/2 after:translate-y-[-50%] after:rounded-full after:bg-primary'
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className='border'>
-          <AvatarImage src='https://github.com/shadcn.png' />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage src={userPhoto} />
+          <AvatarFallback>{userShortName}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56'>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <div className='px-2 py-1.5 text-sm font-normal'>
+          <div className='flex flex-col space-y-1'>
+            <p className='text-sm font-medium leading-none'>{displayName}</p>
+            <p className='text-xs leading-none text-muted-foreground'>
+            {email}
+            </p>
+          </div>
+        </div>
         <DropdownMenuSeparator />
-        <NavLink to={ROUTES.SEARCH} className={({ isActive }) => isActive ? activeNavLinkStyle : 'opacity-80'}>
+        <NavLink
+          to={ROUTES.SEARCH}
+          className={({ isActive }) =>
+            isActive ? activeNavLinkStyle : 'opacity-80'
+          }
+        >
           <DropdownMenuItem>Search for the meaning</DropdownMenuItem>
         </NavLink>
-        <NavLink to={ROUTES.TRAINING} className={({ isActive }) => isActive ? activeNavLinkStyle : 'opacity-80'}>
-        <DropdownMenuItem disabled={!isAuth}>Training</DropdownMenuItem>
+        <NavLink
+          to={ROUTES.TRAINING}
+          className={({ isActive }) =>
+            isActive ? activeNavLinkStyle : 'opacity-80'
+          }
+        >
+          <DropdownMenuItem disabled={!isAuth}>Training</DropdownMenuItem>
         </NavLink>
-        <NavLink to={ROUTES.WORDS} className={({ isActive }) => isActive ? activeNavLinkStyle : 'opacity-80'}>
-        <DropdownMenuItem disabled={!isAuth}>My words</DropdownMenuItem>
+        <NavLink
+          to={ROUTES.WORDS}
+          className={({ isActive }) =>
+            isActive ? activeNavLinkStyle : 'opacity-80'
+          }
+        >
+          <DropdownMenuItem disabled={!isAuth}>My words</DropdownMenuItem>
         </NavLink>
         <DropdownMenuSeparator />
         <DropdownMenuItem className='flex flex-col gap-2'>
@@ -83,9 +109,7 @@ export function Menu() {
           </div>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Log out
-        </DropdownMenuItem>
+        <DropdownMenuItem>Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
