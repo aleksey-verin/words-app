@@ -4,6 +4,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { AppDispatch, RootState } from '../store'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { auth } from '@/lib/firebase'
+import { storage, storageGetItem } from '@/lib/localstorage'
 
 export const userSign = {
   in: 'signIn',
@@ -26,8 +27,8 @@ export interface UserAuthInitialState {
 }
 
 const initialState: UserAuthInitialState = {
-  isAuth: false,
-  user: null,
+  isAuth: storageGetItem(storage.isAuth) ?? false,
+  user: storageGetItem(storage.user) ?? null,
   isLoading: false,
   isSuccess: false,
   isError: false,

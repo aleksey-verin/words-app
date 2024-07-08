@@ -1,6 +1,6 @@
 export const storage = {
-  trainingList: 'english-training-list',
-  user: 'words-app-user'
+  user: 'words-app-user',
+  isAuth: 'words-app-is-auth'
 };
 
 export const storageGetItem = (storageItem: string) => {
