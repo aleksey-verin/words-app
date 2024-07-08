@@ -8,8 +8,12 @@ import PageWords from './pages/words/page-words'
 import { ROUTES } from './routes'
 import PageQuiz from './pages/quiz/page-quiz'
 import PageLogin from './pages/login/page-login'
+import { useAppSelector } from './hooks/store-hook'
+import { selectorUserAuthSlice } from './store/reducers/userAuthSlice'
 
 function AppRouter() {
+
+  const { isAuth } = useAppSelector(selectorUserAuthSlice)
   return (
     <div className='h-full bg-background font-sans antialiased relative'>
       <HashRouter>
@@ -26,7 +30,7 @@ function AppRouter() {
             <Route element={<PageSearch />} path={ROUTES.SEARCH} />
             <Route element={<PageTraining />} path={ROUTES.TRAINING} />
             <Route element={<PageWords />} path={ROUTES.WORDS} />
-            <Route element={<PageLogin />} path={ROUTES.LOGIN} />
+            {!isAuth && <Route element={<PageLogin />} path={ROUTES.LOGIN} />}
           </Route>
           <Route element={<PageQuiz />} path={ROUTES.QUIZ} />
           <Route path='*' element={<Navigate replace to={ROUTES.SEARCH} />} />

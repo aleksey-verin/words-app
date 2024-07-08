@@ -1,5 +1,7 @@
+import { useAppSelector } from '@/hooks/store-hook'
 import { cn } from '@/lib/utils'
 import { ROUTES } from '@/routes'
+import { selectorUserAuthSlice } from '@/store/reducers/userAuthSlice'
 import { NavLink } from 'react-router-dom'
 
 const links = [
@@ -21,7 +23,7 @@ const links = [
 ]
 
 const Navbar = () => {
-  const isAuth = true
+  const { isAuth } = useAppSelector(selectorUserAuthSlice)
 
   return (
     <nav
@@ -36,7 +38,7 @@ const Navbar = () => {
             to={to}
             className={({ isActive }) =>
               cn(
-                'h-7 text-base px-1 rounded-md flex items-center justify-center transition-all duration-300 opacity-80',
+                'h-7 text-base px-1 rounded-md flex items-center justify-center transition-all duration-300 opacity-80 hover:opacity-100 hover:font-medium',
                 isActive && 'bg-background font-medium shadow opacity-100',
                 isPrivate && !isAuth && 'pointer-events-none opacity-40'
               )

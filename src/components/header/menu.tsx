@@ -12,11 +12,13 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { ROUTES } from '@/routes'
 import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/utils'
-import { UserData } from '@/store/reducers/userAuthSlice'
+import { userAuthLogout, UserData } from '@/store/reducers/userAuthSlice'
+import { useAppDispatch } from '@/hooks/store-hook'
 
 const isAuth = true
 
 export function Menu({ user }: { user: UserData }) {
+  const dispatch = useAppDispatch()
   const { theme, setTheme } = useTheme()
   const { photoURL, displayName, email } = user
   const userPhoto = photoURL ? photoURL : ''
@@ -24,6 +26,10 @@ export function Menu({ user }: { user: UserData }) {
 
   const activeNavLinkStyle =
     'relative font-medium after:content-[""] after:absolute after:w-2 after:h-2 after:right-2 after:top-1/2 after:translate-y-[-50%] after:rounded-full after:bg-primary'
+
+  const handleLogout = () => {
+    dispatch(userAuthLogout())
+  }
 
   return (
     <DropdownMenu>
@@ -109,7 +115,7 @@ export function Menu({ user }: { user: UserData }) {
           </div>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Log out</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
