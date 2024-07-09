@@ -1,7 +1,6 @@
-import { useAppSelector } from '@/hooks/store-hook'
 import { cn } from '@/lib/utils'
+import { useCheckAuth } from '@/queries/auth'
 import { ROUTES } from '@/routes'
-import { selectorUserAuthSlice } from '@/store/reducers/userAuthSlice'
 import { NavLink } from 'react-router-dom'
 
 const links = [
@@ -23,7 +22,8 @@ const links = [
 ]
 
 const Navbar = () => {
-  const { isAuth } = useAppSelector(selectorUserAuthSlice)
+  const {data} = useCheckAuth()
+  const isAuth = data?.isAuth
 
   return (
     <nav

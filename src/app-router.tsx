@@ -8,12 +8,14 @@ import PageWords from './pages/words/page-words'
 import { ROUTES } from './routes'
 import PageQuiz from './pages/quiz/page-quiz'
 import PageLogin from './pages/login/page-login'
-import { useAppSelector } from './hooks/store-hook'
-import { selectorUserAuthSlice } from './store/reducers/userAuthSlice'
+// import { useAppSelector } from './hooks/store-hook'
+// import { selectorUserAuthSlice } from './store/reducers/userAuthSlice'
+import { useCheckAuth } from './queries/auth'
 
 function AppRouter() {
+  const { data } = useCheckAuth()
+  const isAuth = data?.isAuth
 
-  const { isAuth } = useAppSelector(selectorUserAuthSlice)
   return (
     <div className='h-full bg-background font-sans antialiased relative'>
       <HashRouter>

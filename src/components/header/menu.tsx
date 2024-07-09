@@ -11,24 +11,26 @@ import { useTheme } from '@/providers/theme-provider'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { ROUTES } from '@/routes'
 import { NavLink } from 'react-router-dom'
-import { cn } from '@/lib/utils'
-import { userAuthLogout, UserData } from '@/store/reducers/userAuthSlice'
-import { useAppDispatch } from '@/hooks/store-hook'
+import { cn, getShortName } from '@/lib/utils'
+import { useLogOut } from '@/queries/auth'
+import { useCheckAuth } from '@/queries/auth'
+import { UserData } from '@/api/auth/types'
 
-const isAuth = true
-
-export function Menu({ user }: { user: UserData }) {
-  const dispatch = useAppDispatch()
+export function Menu({ userInfo }: { userInfo: UserData }) {
   const { theme, setTheme } = useTheme()
-  const { photoURL, displayName, email } = user
+  const {mutateAsync} = useLogOut()
+  const {data} = useCheckAuth()
+  const isAuth = data?.isAuth
+
+  const { photoURL, displayName, email } = userInfo
   const userPhoto = photoURL ? photoURL : ''
-  const userShortName = displayName ? displayName[0].toUpperCase() : ''
+  const userShortName = getShortName(displayName ?? '')
 
   const activeNavLinkStyle =
     'relative font-medium after:content-[""] after:absolute after:w-2 after:h-2 after:right-2 after:top-1/2 after:translate-y-[-50%] after:rounded-full after:bg-primary'
 
   const handleLogout = () => {
-    dispatch(userAuthLogout())
+    mutateAsync()
   }
 
   return (
@@ -120,3 +122,8 @@ export function Menu({ user }: { user: UserData }) {
     </DropdownMenu>
   )
 }
+
+
+{/* <Link to='/login' className={buttonVariants({ variant: 'outline' })}>
+Login
+</Link> */}

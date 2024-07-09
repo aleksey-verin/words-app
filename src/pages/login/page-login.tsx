@@ -1,22 +1,20 @@
 import { Button } from '@/components/ui/button'
 import TopTitle from '@/components/ui/top-title'
-import { useAppDispatch, useAppSelector } from '@/hooks/store-hook'
-import { selectorUserAuthSlice, userAuthLogin } from '@/store/reducers/userAuthSlice'
+import { useLogInWithGoogle } from '@/queries/auth';
 
 const PageLogin = () => {
-  const dispatch = useAppDispatch()
-  const {isLoading, isAuth, user} = useAppSelector(selectorUserAuthSlice)
+  const {mutateAsync, isPending} = useLogInWithGoogle()
 
   const handleLogin = async () => {
-    dispatch(userAuthLogin());
+    mutateAsync()
   };
 
-  console.log(isLoading, isAuth, user);
+  console.log(isPending);
 
   return (
     <main className='h-full pt-3 px-2 pb-16 flex flex-col gap-4'>
       <TopTitle>Login</TopTitle>
-      <Button disabled={isLoading} onClick={handleLogin}>Login</Button>
+      <Button disabled={isPending} onClick={handleLogin}>Login</Button>
     </main>
   )
 }
