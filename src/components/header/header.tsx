@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom'
 import { buttonVariants } from '../ui/button'
 import { Menu } from './menu'
-// import { useAppSelector } from '@/hooks/store-hook'
-// import { selectorUserAuthSlice } from '@/store/reducers/userAuthSlice'
-import { useCheckAuth } from '@/queries/auth'
+import { useAppSelector } from '@/hooks/store-hook'
+import { selectorUserAuthSlice } from '@/store/reducers/userAuthSlice'
+// import { useCheckAuth } from '@/queries/auth'
 import { Skeleton } from '../ui/skeleton'
 
 const Header = () => {
-  // const { isAuth, user } = useAppSelector(selectorUserAuthSlice)
-  const { data, isLoading } = useCheckAuth()
-  const isAuth = data?.isAuth
-  const userInfo = data?.user
+  const { isAuth, user: userInfo, isLoading } = useAppSelector(selectorUserAuthSlice)
+  // const { data, isLoading } = useCheckAuth()
+  // const isAuth = data?.isAuth
+  // const userInfo = data?.user
 
   if (isLoading)
     return (

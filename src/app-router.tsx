@@ -10,11 +10,21 @@ import PageQuiz from './pages/quiz/page-quiz'
 import PageLogin from './pages/login/page-login'
 // import { useAppSelector } from './hooks/store-hook'
 // import { selectorUserAuthSlice } from './store/reducers/userAuthSlice'
-import { useCheckAuth } from './queries/auth'
+// import { useCheckAuth } from './queries/auth'
+import { useAppDispatch, useAppSelector } from './hooks/store-hook'
+import { selectorUserAuthSlice, userCheckAuthGetData } from './store/reducers/userAuthSlice'
+import { useEffect } from 'react'
 
 function AppRouter() {
-  const { data } = useCheckAuth()
-  const isAuth = data?.isAuth
+  const dispatch = useAppDispatch()
+  const { isAuth } = useAppSelector(selectorUserAuthSlice)
+
+  useEffect(() => {
+    dispatch(userCheckAuthGetData())
+  }, [dispatch]);
+
+  // const { data } = useCheckAuth()
+  // const isAuth = data?.isAuth
 
   return (
     <div className='h-full bg-background font-sans antialiased relative'>
@@ -32,8 +42,8 @@ function AppRouter() {
             <Route element={<PageSearch />} path={ROUTES.SEARCH} />
             <Route element={<PageTraining />} path={ROUTES.TRAINING} />
             <Route element={<PageWords />} path={ROUTES.WORDS} />
-            {!isAuth && <Route element={<PageLogin />} path={ROUTES.LOGIN} />}
           </Route>
+          {!isAuth && <Route element={<PageLogin />} path={ROUTES.LOGIN} />}
           <Route element={<PageQuiz />} path={ROUTES.QUIZ} />
           <Route path='*' element={<Navigate replace to={ROUTES.SEARCH} />} />
         </Routes>

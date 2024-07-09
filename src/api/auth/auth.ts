@@ -1,26 +1,20 @@
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth'
-import { AuthData } from './types'
+import { UserData } from './types'
 import { auth } from '@/lib/firebase';
 
-export async function checkAuth(): Promise<AuthData> {
+export async function checkAuthAndGetData(): Promise<UserData | null> {
   const auth = getAuth();
   return new Promise((resolve, reject) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         resolve({
-          isAuth: true,
-          user: {
-            email: user.email,
-            uid: user.uid,
-            displayName: user.displayName,
-            photoURL: user.photoURL,
-          },
+          email: user.email,
+          uid: user.uid,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
         });
       } else {
-        resolve({
-          isAuth: false,
-          user: null,
-        });
+        resolve(null);
       }
       unsubscribe();
     }, reject);

@@ -1,4 +1,5 @@
 export const storage = {
+  theme: 'words-app-theme',
   user: 'words-app-user',
   isAuth: 'words-app-is-auth'
 };

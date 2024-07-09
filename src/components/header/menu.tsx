@@ -12,25 +12,30 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { ROUTES } from '@/routes'
 import { NavLink } from 'react-router-dom'
 import { cn, getShortName } from '@/lib/utils'
-import { useLogOut } from '@/queries/auth'
-import { useCheckAuth } from '@/queries/auth'
+// import { useLogOut } from '@/queries/auth'
+// import { useCheckAuth } from '@/queries/auth'
 import { UserData } from '@/api/auth/types'
+import { useAppDispatch, useAppSelector } from '@/hooks/store-hook'
+import { selectorUserAuthSlice, userLogout } from '@/store/reducers/userAuthSlice'
 
 export function Menu({ userInfo }: { userInfo: UserData }) {
   const { theme, setTheme } = useTheme()
-  const {mutateAsync} = useLogOut()
-  const {data} = useCheckAuth()
-  const isAuth = data?.isAuth
+  const dispatch = useAppDispatch()
+  const { isAuth } = useAppSelector(selectorUserAuthSlice)
+
+  // const { mutateAsync: logOutUser } = useLogOut()
+  // const { data: authData } = useCheckAuth()
+  // const isAuth = authData?.isAuth
 
   const { photoURL, displayName, email } = userInfo
   const userPhoto = photoURL ? photoURL : ''
   const userShortName = getShortName(displayName ?? '')
 
   const activeNavLinkStyle =
-    'relative font-medium after:content-[""] after:absolute after:w-2 after:h-2 after:right-2 after:top-1/2 after:translate-y-[-50%] after:rounded-full after:bg-primary'
+    'relative after:content-[""] after:absolute after:w-2 after:h-2 after:right-2 after:top-1/2 after:translate-y-[-50%] after:rounded-full after:bg-primary'
 
   const handleLogout = () => {
-    mutateAsync()
+    dispatch(userLogout())
   }
 
   return (
@@ -46,7 +51,7 @@ export function Menu({ userInfo }: { userInfo: UserData }) {
           <div className='flex flex-col space-y-1'>
             <p className='text-sm font-medium leading-none'>{displayName}</p>
             <p className='text-xs leading-none text-muted-foreground'>
-            {email}
+              {email}
             </p>
           </div>
         </div>
@@ -123,7 +128,8 @@ export function Menu({ userInfo }: { userInfo: UserData }) {
   )
 }
 
-
-{/* <Link to='/login' className={buttonVariants({ variant: 'outline' })}>
+{
+  /* <Link to='/login' className={buttonVariants({ variant: 'outline' })}>
 Login
-</Link> */}
+</Link> */
+}

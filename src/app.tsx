@@ -1,20 +1,16 @@
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-// import { Provider } from "react-redux";
+import { Provider } from "react-redux";
 import AppRouter from "./app-router";
-import { QueryProvider } from "./providers/query-provider";
 import { ThemeProvider } from "./providers/theme-provider";
-// import { store } from "./store/store";
+import { store } from "./store/store";
+import { storage } from "./lib/localstorage";
 
 const App = () => {
   return (
-    <QueryProvider>
-      {/* <Provider store={store}> */}
-        <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+      <Provider store={store}>
+        <ThemeProvider defaultTheme='system' storageKey={storage.theme}>
           <AppRouter />
-          <ReactQueryDevtools />
         </ThemeProvider>
-      {/* </Provider> */}
-    </QueryProvider>
+      </Provider>
   )
 }
 
