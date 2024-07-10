@@ -1,9 +1,17 @@
 import { SingleWord } from '@/api/dictionary/types'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
+import { useAppDispatch } from '@/hooks/store-hook'
+import { removeWordFormDictionary } from '@/store/reducers/userDictionarySlice'
 import { Pencil, Trash2 } from 'lucide-react'
 
 const WordsItem = ({ word }: { word: SingleWord }) => {
+  const dispatch = useAppDispatch()
+
+  const handleRemoveWord = () => {
+    dispatch(removeWordFormDictionary(word.word))
+  }
+
   return (
     <div className='flex flex-col gap-2'>
       <div className='flex items-center justify-between gap-2'>
@@ -24,6 +32,7 @@ const WordsItem = ({ word }: { word: SingleWord }) => {
             size={'icon'}
             className='w-6 h-6'
             title='Delete'
+            onClick={handleRemoveWord}
           >
             <Trash2 className='w-5 h-5' />
           </Button>

@@ -6,7 +6,7 @@ import { Minus, Plus, Volume2 } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@/hooks/store-hook'
 import {
   addInDictionary,
-  removeFormDictionary,
+  removeDefinitionFormDictionary,
   selectorUserDictionarySlice,
 } from '@/store/reducers/userDictionarySlice'
 import { cn } from '@/lib/utils'
@@ -30,7 +30,7 @@ const SearchResult = ({ word, result }: { word: string; result: Word }) => {
   }
 
   async function handleRemoveDefinition(word: string, definition: string) {
-    await dispatch(removeFormDictionary({ word, definition }))
+    await dispatch(removeDefinitionFormDictionary({ word, definition }))
   }
 
   // const indexInDictionary = dictionary.findIndex((item) => item.word === word)

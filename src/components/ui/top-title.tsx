@@ -1,9 +1,10 @@
-const TopTitle = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <h3 className='scroll-m-20 text-2xl font-semibold tracking-tight'>
-      {children}
-    </h3>
-  )
+import { cn } from '@/lib/utils'
+import TypographyH3 from './typography-h3'
+
+interface TopTitleProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+const TopTitle = ({ className, ...props }: TopTitleProps) => {
+  return <TypographyH3 className={cn(className)} {...props} />
 }
 
 export default TopTitle

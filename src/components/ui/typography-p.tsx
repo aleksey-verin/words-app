@@ -1,3 +1,9 @@
-export function TypographyP({ children }: { children: React.ReactNode }) {
-  return <p className='leading-7 [&:not(:first-child)]:mt-6'>{children}</p>
+import { cn } from "@/lib/utils"
+
+interface TypographyPProps extends React.HTMLAttributes<HTMLHeadElement> {}
+
+const TypographyP = ({ className, ...props }: TypographyPProps) => {
+  return <p className={cn('leading-7 [&:not(:first-child)]:mt-6', className)} {...props} />
 }
+
+export default TypographyP

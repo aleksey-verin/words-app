@@ -1,7 +1,9 @@
-export function TypographyH1({ children }: { children: React.ReactNode }) {
-  return (
-    <h1 className='scroll-m-20 text-4xl font-semibold tracking-tight'>
-      {children}
-    </h1>
-  )
+import { cn } from "@/lib/utils"
+
+interface TypographyH1Props extends React.HTMLAttributes<HTMLHeadElement> {}
+
+const TypographyH1 = ({ className, ...props }: TypographyH1Props) => {
+  return <h1 className={cn('scroll-m-20 text-4xl font-semibold tracking-tight', className)} {...props} />
 }
+
+export default TypographyH1

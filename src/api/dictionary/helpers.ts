@@ -58,3 +58,18 @@ export function removeDefinition(
 
   return newDictionary;
 }
+
+export function removeWord(
+  dictionary: UserDictionary,
+  word: string,
+): UserDictionary {
+  // Копируем словарь, чтобы не изменять оригинальный объект
+  const copyDictionary = dictionary.map(entry => ({
+    ...entry,
+    definitions: [...entry.definitions]
+  }));
+
+  const newDictionary = copyDictionary.filter(item => item.word !== word);
+
+  return newDictionary;
+}

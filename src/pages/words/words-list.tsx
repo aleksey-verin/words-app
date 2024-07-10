@@ -1,7 +1,7 @@
 import { UserDictionary } from '@/api/dictionary/types'
 import WordsItem from './words-item'
 import { Skeleton } from '@/components/ui/skeleton'
-import { TypographyH4 } from '@/components/ui/typography-h4'
+import TypographyH4 from '@/components/ui/typography-h4'
 
 const WordsList = ({
   dictionary,
@@ -20,11 +20,10 @@ const WordsList = ({
   if (isLoading)
     return (
       <div className='flex flex-col gap-2'>
-        {new Array(3).fill(0).map((_, index) => (
+        {new Array(5).fill(0).map((_, index) => (
           <div key={index} className='flex flex-col gap-2'>
             <Skeleton className='h-6 w-28 mt-2' />
-            <Skeleton className='h-1 w-full' />
-            <Skeleton className='h-24 w-full' />
+            <Skeleton className='h-28 w-full' />
           </div>
         ))}
       </div>

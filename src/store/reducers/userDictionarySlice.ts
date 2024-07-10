@@ -5,7 +5,8 @@ import { UserDictionary } from '@/api/dictionary/types'
 import {
   addInUserDictionary,
   getUserDictionary,
-  removeFromUserDictionary,
+  removeDefinitionFromUserDictionary,
+  removeWordFromUserDictionary,
 } from '@/api/dictionary/dictionary'
 
 export interface UserAuthInitialState {
@@ -69,20 +70,41 @@ export const addInDictionary = createAsyncThunk<
   }
 })
 
-export const removeFormDictionary = createAsyncThunk<
+export const removeDefinitionFormDictionary = createAsyncThunk<
   void,
   { word: string; definition: string },
   {
     dispatch: AppDispatch
     state: RootState
   }
->('removeFormDictionary', async ({ word, definition }, thunkAPI) => {
+>('removeDefinitionFormDictionary', async ({ word, definition }, thunkAPI) => {
   try {
     const user = thunkAPI.getState().userAuthSlice.user
     const email = user?.email
     if (!email) return thunkAPI.rejectWithValue('no user for get dictionary')
     const dictionary = thunkAPI.getState().userDictionarySlice.dictionary
-    await removeFromUserDictionary(email, word, definition, dictionary)
+    await removeDefinitionFromUserDictionary(email, word, definition, dictionary)
+    await thunkAPI.dispatch(getDictionary())
+  } catch (error) {
+    console.log(error)
+    return thunkAPI.rejectWithValue(error)
+  }
+})
+
+export const removeWordFormDictionary = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch
+    state: RootState
+  }
+>('removeWordFormDictionary', async (word, thunkAPI) => {
+  try {
+    const user = thunkAPI.getState().userAuthSlice.user
+    const email = user?.email
+    if (!email) return thunkAPI.rejectWithValue('no user for get dictionary')
+    const dictionary = thunkAPI.getState().userDictionarySlice.dictionary
+    await removeWordFromUserDictionary(email, word, dictionary)
     await thunkAPI.dispatch(getDictionary())
   } catch (error) {
     console.log(error)
@@ -125,16 +147,29 @@ export const userDictionarySlice = createSlice({
       state.isLoading = false
       state.isError = true
     })
-    builder.addCase(removeFormDictionary.pending, (state) => {
+    builder.addCase(removeDefinitionFormDictionary.pending, (state) => {
       state.isLoading = true
       state.isSuccess = false
       state.isError = false
     })
-    builder.addCase(removeFormDictionary.fulfilled, (state) => {
+    builder.addCase(removeDefinitionFormDictionary.fulfilled, (state) => {
       state.isLoading = false
       state.isSuccess = true
     })
-    builder.addCase(removeFormDictionary.rejected, (state) => {
+    builder.addCase(removeDefinitionFormDictionary.rejected, (state) => {
+      state.isLoading = false
+      state.isError = true
+    })
+    builder.addCase(removeWordFormDictionary.pending, (state) => {
+      state.isLoading = true
+      state.isSuccess = false
+      state.isError = false
+    })
+    builder.addCase(removeWordFormDictionary.fulfilled, (state) => {
+      state.isLoading = false
+      state.isSuccess = true
+    })
+    builder.addCase(removeWordFormDictionary.rejected, (state) => {
       state.isLoading = false
       state.isError = true
     })
