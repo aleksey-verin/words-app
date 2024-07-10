@@ -85,6 +85,7 @@ const SearchResult = ({ word, result }: { word: string; result: Word }) => {
                         size={'icon'}
                         className='float-right w-5 h-5 ml-2'
                         onClick={() => handleRemoveDefinition(word, item.definition)}
+                        title='Remove from dictionary'
                       >
                         <Minus className='w-3 h-3' />
                       </Button>
@@ -95,6 +96,7 @@ const SearchResult = ({ word, result }: { word: string; result: Word }) => {
                         size={'icon'}
                         className='float-right w-5 h-5 ml-2'
                         onClick={() => handleAddDefinition(word, item.definition)}
+                        title='Add to dictionary'
                       >
                         <Plus className='w-3 h-3' />
                       </Button>
