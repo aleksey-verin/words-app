@@ -2,14 +2,23 @@ import { SingleWord } from '@/api/dictionary/types'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { useAppDispatch } from '@/hooks/store-hook'
+import { ROUTES } from '@/routes'
+import { getDefinitions } from '@/store/reducers/searchSlice'
 import { removeWordFormDictionary } from '@/store/reducers/userDictionarySlice'
 import { Pencil, Trash2 } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 const WordsItem = ({ word }: { word: SingleWord }) => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate();
 
   const handleRemoveWord = () => {
     dispatch(removeWordFormDictionary(word.word))
+  }
+
+  const handleEditWord = async () => {
+    await dispatch(getDefinitions(word.word))
+    navigate(ROUTES.SEARCH)
   }
 
   return (
@@ -24,6 +33,7 @@ const WordsItem = ({ word }: { word: SingleWord }) => {
             size={'icon'}
             className='w-6 h-6'
             title='Edit'
+            onClick={handleEditWord}
           >
             <Pencil className='w-5 h-5' />
           </Button>
