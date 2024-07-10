@@ -140,7 +140,6 @@ export const userAuthSlice = createSlice({
   },
 })
 
-// export const { increment, decrement, incrementByAmount } = counterSlice.actions
 export const selectorUserAuthSlice = (state: RootState) => state.userAuthSlice
 
 export default userAuthSlice.reducer

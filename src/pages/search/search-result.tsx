@@ -1,5 +1,4 @@
 import { Progress } from '@/components/ui/progress'
-import { Word } from '@/data/types'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Minus, Plus, Volume2 } from 'lucide-react'
@@ -10,13 +9,15 @@ import {
   selectorUserDictionarySlice,
 } from '@/store/reducers/userDictionarySlice'
 import { cn } from '@/lib/utils'
+import { selectorSearchSlice } from '@/store/reducers/searchSlice'
 
-const SearchResult = ({ word, result }: { word: string; result: Word }) => {
+const SearchResult = () => {
   const dispatch = useAppDispatch()
+  const { requestedWord, requestedResult } = useAppSelector(selectorSearchSlice)
   const { dictionary, isLoading } = useAppSelector(selectorUserDictionarySlice)
 
   function handleSound() {
-    const sound = result.phonetics.find((item) =>
+    const sound = requestedResult?.phonetics.find((item) =>
       item.audio ? item.audio : null
     )
     if (!sound) return
@@ -33,15 +34,18 @@ const SearchResult = ({ word, result }: { word: string; result: Word }) => {
     await dispatch(removeDefinitionFormDictionary({ word, definition }))
   }
 
-  // const indexInDictionary = dictionary.findIndex((item) => item.word === word)
-  const wordInDictionary = dictionary.find((item) => item.word === word)
+  const wordInDictionary = dictionary.find(
+    (item) => item.word === requestedWord
+  )
   const isWordInDictionary = wordInDictionary ? true : false
 
   return (
     <div className='flex flex-col gap-2'>
       <div className='flex items-center justify-between flex-wrap gap-1'>
         <h4 className='scroll-m-20 text-xl font-semibold tracking-tight'>
-          {`${word}${result?.phonetic ? ` - ${result.phonetic}` : ''}`}
+          {`${requestedWord}${
+            requestedResult?.phonetic ? ` - ${requestedResult.phonetic}` : ''
+          }`}
         </h4>
         <div className='flex items-center gap-1'>
           {isWordInDictionary && <Badge variant='outline'>Added</Badge>}
@@ -59,7 +63,7 @@ const SearchResult = ({ word, result }: { word: string; result: Word }) => {
         <Progress value={wordInDictionary?.progress} className='h-1' />
       )}
       <div className='h-full w-full mb-20 flex flex-col gap-2'>
-        {result.meanings.map((part, index) => {
+        {requestedResult?.meanings.map((part, index) => {
           return (
             <div key={index} className='flex flex-col gap-2'>
               <div className='flex'>
@@ -84,7 +88,9 @@ const SearchResult = ({ word, result }: { word: string; result: Word }) => {
                         variant={'outline'}
                         size={'icon'}
                         className='float-right w-5 h-5 ml-2'
-                        onClick={() => handleRemoveDefinition(word, item.definition)}
+                        onClick={() =>
+                          handleRemoveDefinition(requestedWord, item.definition)
+                        }
                         title='Remove from dictionary'
                       >
                         <Minus className='w-3 h-3' />
@@ -95,7 +101,9 @@ const SearchResult = ({ word, result }: { word: string; result: Word }) => {
                         variant={'outline'}
                         size={'icon'}
                         className='float-right w-5 h-5 ml-2'
-                        onClick={() => handleAddDefinition(word, item.definition)}
+                        onClick={() =>
+                          handleAddDefinition(requestedWord, item.definition)
+                        }
                         title='Add to dictionary'
                       >
                         <Plus className='w-3 h-3' />

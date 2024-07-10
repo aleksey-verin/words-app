@@ -1,40 +1,26 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-
 import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
-  // FormDescription,
   FormField,
   FormItem,
-  // FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { ClipboardCopy, SearchIcon } from 'lucide-react'
-import { Word } from '@/data/types'
+import { useAppDispatch } from '@/hooks/store-hook'
+import { getDefinitions } from '@/store/reducers/searchSlice'
 
 const formSchema = z.object({
   word: z.string().min(2).max(50),
 })
 
-async function requestWord(word: string) {
-  const response = await fetch(
-    `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
-  )
-  const data = (await response.json()) as Word[]
-  return data[0]
-}
+const SearchForm = () => {
+  const dispatch = useAppDispatch()
 
-const SearchForm = ({
-  setWord,
-  setResult,
-}: {
-  setWord: (value: string) => void
-  setResult: (value: Word | null) => void
-}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,15 +29,8 @@ const SearchForm = ({
   })
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const value = values.word.trim()
-    const result = await requestWord(value)
-    if (result) {
-      setResult(result)
-      setWord(result.word)
-    } else {
-      setResult(null)
-      setWord('No Definitions Found')
-    }
+    const inputValue = values.word.trim()
+    await dispatch(getDefinitions(inputValue))
     form.reset()
   }
 
@@ -70,7 +49,6 @@ const SearchForm = ({
           name='word'
           render={({ field }) => (
             <FormItem>
-              {/* <FormLabel>Username</FormLabel> */}
               <FormControl>
                 <div className='flex items-center justify-between gap-2'>
                   <Input
@@ -100,9 +78,6 @@ const SearchForm = ({
                   </Button>
                 </div>
               </FormControl>
-              {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
               <FormMessage className='absolute left-0 text-xs top-9' />
             </FormItem>
           )}
