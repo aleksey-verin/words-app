@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userAuthSlice from './reducers/userAuthSlice'
+import userDictionarySlice from './reducers/userDictionarySlice'
 // import { storage, storageSetItem } from '@/lib/localstorage';
 
 export const store = configureStore({
   reducer: {
-    userAuthSlice
+    userAuthSlice,
+    userDictionarySlice
   },
 })
 

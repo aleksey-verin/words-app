@@ -37,7 +37,7 @@ export const userLoginWithGoogle = createAsyncThunk<
   try {
     const response = await logInWithGoogle()
     if (response) {
-      thunkAPI.dispatch(userCheckAuthGetData())
+      await thunkAPI.dispatch(userCheckAuthGetData())
     } else {
       return thunkAPI.rejectWithValue('no auth')
     }

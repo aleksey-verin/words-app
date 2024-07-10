@@ -2,54 +2,104 @@ import { Progress } from '@/components/ui/progress'
 import { Word } from '@/data/types'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Plus, Volume2 } from 'lucide-react'
+import { Minus, Plus, Volume2 } from 'lucide-react'
+import { useAppDispatch, useAppSelector } from '@/hooks/store-hook'
+import {
+  addInDictionary,
+  removeFormDictionary,
+  selectorUserDictionarySlice,
+} from '@/store/reducers/userDictionarySlice'
+import { cn } from '@/lib/utils'
 
 const SearchResult = ({ word, result }: { word: string; result: Word }) => {
+  const dispatch = useAppDispatch()
+  const { dictionary, isLoading } = useAppSelector(selectorUserDictionarySlice)
 
   function handleSound() {
-    const sound = result.phonetics.find((item) => item.audio ? item.audio : null)
+    const sound = result.phonetics.find((item) =>
+      item.audio ? item.audio : null
+    )
     if (!sound) return
     if (sound.audio) {
-      new Audio(sound.audio).play();
+      new Audio(sound.audio).play()
     }
   }
 
+  async function handleAddDefinition(word: string, definition: string) {
+    await dispatch(addInDictionary({ word, definition }))
+  }
+
+  async function handleRemoveDefinition(word: string, definition: string) {
+    await dispatch(removeFormDictionary({ word, definition }))
+  }
+
+  // const indexInDictionary = dictionary.findIndex((item) => item.word === word)
+  const wordInDictionary = dictionary.find((item) => item.word === word)
+  const isWordInDictionary = wordInDictionary ? true : false
+
   return (
     <div className='flex flex-col gap-2'>
-      <div className='flex items-center justify-between'>
+      <div className='flex items-center justify-between flex-wrap gap-1'>
         <h4 className='scroll-m-20 text-xl font-semibold tracking-tight'>
           {`${word}${result?.phonetic ? ` - ${result.phonetic}` : ''}`}
         </h4>
-        <Button
-          variant={'ghost'}
-          size={'icon'}
-          className='w-8 h-8'
-          onClick={handleSound}
-        >
-          <Volume2 className='w-5 h-5' />
-        </Button>
+        <div className='flex items-center gap-1'>
+          {isWordInDictionary && <Badge variant='outline'>Added</Badge>}
+          <Button
+            variant={'ghost'}
+            size={'icon'}
+            className='w-6 h-6'
+            onClick={handleSound}
+          >
+            <Volume2 className='w-5 h-5' />
+          </Button>
+        </div>
       </div>
-      <Progress value={25} className='h-1' />
+      {isWordInDictionary && (
+        <Progress value={wordInDictionary?.progress} className='h-1' />
+      )}
       <div className='h-full w-full mb-20 flex flex-col gap-2'>
         {result.meanings.map((part, index) => {
           return (
             <div key={index} className='flex flex-col gap-2'>
               <div className='flex'>
-                <Badge variant='secondary'>{part.partOfSpeech}</Badge>
+                <Badge variant='default'>{part.partOfSpeech}</Badge>
               </div>
               {part.definitions.map((item, index) => (
                 <div
                   key={index}
-                  className='p-2 border rounded-lg flex flex-col gap-1'
+                  className={cn(
+                    'p-2 border rounded-lg flex flex-col gap-1',
+                    isWordInDictionary &&
+                      wordInDictionary?.definitions.includes(item.definition)
+                      ? 'bg-slate-100'
+                      : ''
+                  )}
                 >
                   <div className=''>
-                    <Button
-                      variant={'outline'}
-                      size={'icon'}
-                      className='float-right w-5 h-5 ml-2'
-                    >
-                      <Plus className='w-3 h-3' />
-                    </Button>
+                    {isWordInDictionary &&
+                    wordInDictionary?.definitions.includes(item.definition) ? (
+                      <Button
+                        disabled={isLoading}
+                        variant={'outline'}
+                        size={'icon'}
+                        className='float-right w-5 h-5 ml-2'
+                        onClick={() => handleRemoveDefinition(word, item.definition)}
+                      >
+                        <Minus className='w-3 h-3' />
+                      </Button>
+                    ) : (
+                      <Button
+                        disabled={isLoading}
+                        variant={'outline'}
+                        size={'icon'}
+                        className='float-right w-5 h-5 ml-2'
+                        onClick={() => handleAddDefinition(word, item.definition)}
+                      >
+                        <Plus className='w-3 h-3' />
+                      </Button>
+                    )}
+
                     <p>{item.definition}</p>
                   </div>
                   {item.example && (

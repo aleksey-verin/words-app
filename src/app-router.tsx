@@ -1,30 +1,30 @@
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
-import { HashRouter } from 'react-router-dom'
+import { HashRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import Header from './components/header/header'
 import Navbar from './components/navbar/navbar'
 import PageSearch from './pages/search/page-search'
 import PageTraining from './pages/training/page-training'
 import PageWords from './pages/words/page-words'
-import { ROUTES } from './routes'
 import PageQuiz from './pages/quiz/page-quiz'
 import PageLogin from './pages/login/page-login'
-// import { useAppSelector } from './hooks/store-hook'
-// import { selectorUserAuthSlice } from './store/reducers/userAuthSlice'
-// import { useCheckAuth } from './queries/auth'
+import { ROUTES } from './routes'
 import { useAppDispatch, useAppSelector } from './hooks/store-hook'
 import { selectorUserAuthSlice, userCheckAuthGetData } from './store/reducers/userAuthSlice'
 import { useEffect } from 'react'
+import { getDictionary } from './store/reducers/userDictionarySlice'
 
 function AppRouter() {
   const dispatch = useAppDispatch()
   const { isAuth } = useAppSelector(selectorUserAuthSlice)
 
-  useEffect(() => {
-    dispatch(userCheckAuthGetData())
-  }, [dispatch]);
+  const getInitialData = async () => {
+    await dispatch(userCheckAuthGetData())
+    await dispatch(getDictionary())
+  }
 
-  // const { data } = useCheckAuth()
-  // const isAuth = data?.isAuth
+  useEffect(() => {
+    getInitialData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className='h-full bg-background font-sans antialiased relative'>
