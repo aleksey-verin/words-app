@@ -7,7 +7,8 @@ import { useAppSelector } from '@/hooks/store-hook'
 import { selectorSearchSlice } from '@/store/reducers/searchSlice'
 
 const PageSearch = () => {
-  const { requestedResult, errorMessage } = useAppSelector(selectorSearchSlice)
+  const { requestedResult, errorMessage, isError } =
+    useAppSelector(selectorSearchSlice)
 
   return (
     <main className='relative h-full pt-3 px-2 flex flex-col gap-4'>
@@ -19,11 +20,8 @@ const PageSearch = () => {
         )}
       >
         <SearchForm />
-        {requestedResult ? (
-          <SearchResult />
-        ) : (
-          <SearchError text={errorMessage} />
-        )}
+        {requestedResult && <SearchResult />}
+        {isError && <SearchError text={errorMessage} />}
       </div>
     </main>
   )
