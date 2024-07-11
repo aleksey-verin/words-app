@@ -1,7 +1,12 @@
 import { db } from '@/lib/firebase'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { UserDictionary } from './types'
-import { addDefinition, removeDefinition, removeWord } from './helpers'
+import {
+  addDefinition,
+  removeDefinition,
+  removeWord,
+  updateListOfWords,
+} from './helpers'
 
 const user_dictionary = 'user-dictionary'
 
@@ -38,6 +43,19 @@ export async function addInUserDictionary(
   })
 }
 
+export async function updateListOfWordsInUserDictionary(
+  email: string,
+  dictionary: UserDictionary,
+  listOfWords: UserDictionary
+) {
+  if (!email) return
+
+  const newData = updateListOfWords(dictionary, listOfWords)
+  await setDoc(doc(db, email, user_dictionary), {
+    dictionary: newData,
+  })
+}
+
 export async function removeDefinitionFromUserDictionary(
   email: string,
   word: string,
@@ -64,6 +82,3 @@ export async function removeWordFromUserDictionary(
     dictionary: newData,
   })
 }
-
-
-

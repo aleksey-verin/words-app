@@ -32,6 +32,32 @@ export function addDefinition(
   return newDictionary;
 }
 
+export function updateListOfWords(
+  dictionary: UserDictionary,
+  listOfWords: UserDictionary,
+): UserDictionary {
+
+  const newDictionary = dictionary.map(entry => ({
+    ...entry,
+    definitions: [...entry.definitions]
+  }));
+
+  const newListOfWords = listOfWords.map(entry => ({
+    ...entry,
+    definitions: [...entry.definitions]
+  }));
+
+  const newArray = newDictionary.map(entry => {
+    const index = newListOfWords.findIndex(item => item.word === entry.word);
+    if (index !== -1) {
+      return newListOfWords[index];
+  } else {
+    return entry;
+  }})
+
+  return newArray;
+}
+
 export function removeDefinition(
   dictionary: UserDictionary,
   word: string,

@@ -7,6 +7,7 @@ import {
   getUserDictionary,
   removeDefinitionFromUserDictionary,
   removeWordFromUserDictionary,
+  updateListOfWordsInUserDictionary,
 } from '@/api/dictionary/dictionary'
 
 export interface UserAuthInitialState {
@@ -62,6 +63,27 @@ export const addInDictionary = createAsyncThunk<
     if (!email) return thunkAPI.rejectWithValue('no user for get dictionary')
     const dictionary = thunkAPI.getState().userDictionarySlice.dictionary
     await addInUserDictionary(email, word, definition, dictionary)
+    await thunkAPI.dispatch(getDictionary())
+  } catch (error) {
+    console.log(error)
+    return thunkAPI.rejectWithValue(error)
+  }
+})
+
+export const updateDictionary = createAsyncThunk<
+  void,
+  UserDictionary,
+  {
+    dispatch: AppDispatch
+    state: RootState
+  }
+>('updateDictionary', async (wordsList, thunkAPI) => {
+  try {
+    const user = thunkAPI.getState().userAuthSlice.user
+    const email = user?.email
+    if (!email) return thunkAPI.rejectWithValue('no user for get dictionary')
+    const dictionary = thunkAPI.getState().userDictionarySlice.dictionary
+    await updateListOfWordsInUserDictionary(email, dictionary, wordsList)
     await thunkAPI.dispatch(getDictionary())
   } catch (error) {
     console.log(error)
@@ -147,6 +169,19 @@ export const userDictionarySlice = createSlice({
       state.isSuccess = true
     })
     builder.addCase(addInDictionary.rejected, (state) => {
+      state.isLoading = false
+      state.isError = true
+    })
+    builder.addCase(updateDictionary.pending, (state) => {
+      state.isLoading = true
+      state.isSuccess = false
+      state.isError = false
+    })
+    builder.addCase(updateDictionary.fulfilled, (state) => {
+      state.isLoading = false
+      state.isSuccess = true
+    })
+    builder.addCase(updateDictionary.rejected, (state) => {
       state.isLoading = false
       state.isError = true
     })
