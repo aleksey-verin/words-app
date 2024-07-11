@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import TypographyH3 from './typography-h3'
+import TypographyH3 from './typography/typography-h3'
 
 interface TopTitleProps extends React.HTMLAttributes<HTMLDivElement> {}
 

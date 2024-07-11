@@ -38,7 +38,6 @@ export const getDictionary = createAsyncThunk<
     if (!email) return thunkAPI.rejectWithValue('no user for get dictionary')
     const data = await getUserDictionary(email)
     if (data) {
-      console.log(data)
       return data
     } else {
       return thunkAPI.rejectWithValue('no dictionary')

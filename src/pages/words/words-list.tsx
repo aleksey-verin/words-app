@@ -1,7 +1,7 @@
 import { UserDictionary } from '@/api/dictionary/types'
 import WordsItem from './words-item'
 import { Skeleton } from '@/components/ui/skeleton'
-import TypographyH4 from '@/components/ui/typography-h4'
+import TypographyH4 from '@/components/ui/typography/typography-h4'
 
 const WordsList = ({
   dictionary,
