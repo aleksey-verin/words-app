@@ -4,13 +4,13 @@ import Navbar from './components/navbar/navbar'
 import PageSearch from './pages/search/page-search'
 import PageTraining from './pages/training/page-training'
 import PageWords from './pages/words/page-words'
-import PageQuiz from './pages/quiz/page-quiz'
 import PageLogin from './pages/login/page-login'
 import { ROUTES } from './routes'
 import { useAppDispatch, useAppSelector } from './hooks/store-hook'
 import { selectorUserAuthSlice, userCheckAuthGetData } from './store/reducers/userAuthSlice'
 import { useEffect } from 'react'
 import { getDictionary } from './store/reducers/userDictionarySlice'
+import { Toaster } from './components/ui/sonner'
 
 function AppRouter() {
   const dispatch = useAppDispatch()
@@ -36,6 +36,7 @@ function AppRouter() {
                 <Header />
                 <Outlet />
                 <Navbar />
+                <Toaster />
               </>
             }
           >
@@ -44,7 +45,6 @@ function AppRouter() {
             {isAuth && <Route element={<PageWords />} path={ROUTES.WORDS} />}
           </Route>
           {!isAuth && <Route element={<PageLogin />} path={ROUTES.LOGIN} />}
-          <Route element={<PageQuiz />} path={ROUTES.QUIZ} />
           <Route path='*' element={<Navigate replace to={ROUTES.SEARCH} />} />
         </Routes>
       </HashRouter>

@@ -10,9 +10,13 @@ import {
 } from '@/store/reducers/userDictionarySlice'
 import { cn } from '@/lib/utils'
 import { selectorSearchSlice } from '@/store/reducers/searchSlice'
+import { selectorUserAuthSlice } from '@/store/reducers/userAuthSlice'
+import { toast } from 'sonner'
+import WarningLogin from '@/components/ui/warning-login'
 
 const SearchResult = () => {
   const dispatch = useAppDispatch()
+  const { isAuth } = useAppSelector(selectorUserAuthSlice)
   const { requestedWord, requestedResult } = useAppSelector(selectorSearchSlice)
   const { dictionary, isLoading } = useAppSelector(selectorUserDictionarySlice)
 
@@ -27,11 +31,19 @@ const SearchResult = () => {
   }
 
   async function handleAddDefinition(word: string, definition: string) {
-    await dispatch(addInDictionary({ word, definition }))
+    if (isAuth) {
+      await dispatch(addInDictionary({ word, definition }))
+    } else {
+      toast(<WarningLogin text='Please login to save words' />)
+    }
   }
 
   async function handleRemoveDefinition(word: string, definition: string) {
-    await dispatch(removeDefinitionFormDictionary({ word, definition }))
+    if (isAuth) {
+      await dispatch(removeDefinitionFormDictionary({ word, definition }))
+    } else {
+      toast(<WarningLogin text='Please login to save words' />)
+    }
   }
 
   const wordInDictionary = dictionary.find(
