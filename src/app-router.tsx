@@ -40,8 +40,8 @@ function AppRouter() {
             }
           >
             <Route element={<PageSearch />} path={ROUTES.SEARCH} />
-            <Route element={<PageTraining />} path={ROUTES.TRAINING} />
-            <Route element={<PageWords />} path={ROUTES.WORDS} />
+            {isAuth && <Route element={<PageTraining />} path={ROUTES.TRAINING} />}
+            {isAuth && <Route element={<PageWords />} path={ROUTES.WORDS} />}
           </Route>
           {!isAuth && <Route element={<PageLogin />} path={ROUTES.LOGIN} />}
           <Route element={<PageQuiz />} path={ROUTES.QUIZ} />
