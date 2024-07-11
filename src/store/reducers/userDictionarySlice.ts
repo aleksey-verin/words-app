@@ -114,7 +114,11 @@ export const removeWordFormDictionary = createAsyncThunk<
 export const userDictionarySlice = createSlice({
   name: 'userDictionarySlice',
   initialState,
-  reducers: {},
+  reducers: {
+    clearCurrentUserDictionary(state) {
+      state.dictionary = initialState.dictionary;
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(getDictionary.pending, (state) => {
       state.isLoading = true
@@ -175,7 +179,7 @@ export const userDictionarySlice = createSlice({
   },
 })
 
-// export const { increment, decrement, incrementByAmount } = counterSlice.actions
+export const { clearCurrentUserDictionary } = userDictionarySlice.actions
 export const selectorUserDictionarySlice = (state: RootState) =>
   state.userDictionarySlice
 

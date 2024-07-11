@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { AppDispatch, RootState } from '../store'
 import { checkAuthAndGetData, logInWithGoogle, logOut } from '@/api/auth/auth'
+import { clearCurrentUserDictionary, getDictionary } from './userDictionarySlice'
 
 export interface UserData {
   email: string | null
@@ -38,6 +39,7 @@ export const userLoginWithGoogle = createAsyncThunk<
     const response = await logInWithGoogle()
     if (response) {
       await thunkAPI.dispatch(userCheckAuthGetData())
+      await thunkAPI.dispatch(getDictionary())
     } else {
       return thunkAPI.rejectWithValue('no auth')
     }
@@ -78,6 +80,7 @@ export const userLogout = createAsyncThunk<
 >('userLogout', async (_, thunkAPI) => {
   try {
     await logOut()
+    thunkAPI.dispatch(clearCurrentUserDictionary())
   } catch (error) {
     console.log(error)
     return thunkAPI.rejectWithValue(error)
