@@ -105,6 +105,9 @@ export const userTrainingSlice = createSlice({
     setCorrectAnswerForWords(state, { payload }: PayloadAction<number>) {
       state.trainingWords[payload].userResultCorrect = true
     },
+    setCorrectAnswerForDefinitions(state, { payload }: PayloadAction<number>) {
+      state.trainingDefinitions[payload].userResultCorrect = true
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(updateProgressInDictionary.pending, (state) => {
@@ -128,6 +131,7 @@ export const {
   getTrainingQuestionsForDefinitions,
   getAllWordsForTraining,
   setCorrectAnswerForWords,
+  setCorrectAnswerForDefinitions
 } = userTrainingSlice.actions
 export const selectorUserTrainingSlice = (state: RootState) =>
   state.userTrainingSlice

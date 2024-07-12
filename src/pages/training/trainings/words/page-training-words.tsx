@@ -1,9 +1,9 @@
 import FooterTraining from '@/components/trainings/footer-training'
 import HeaderTraining from '@/components/trainings/header-training'
 import LayoutTraining from '@/components/trainings/layout-training'
-import { Button } from '@/components/ui/button'
 import TypographyH2 from '@/components/ui/typography/typography-h2'
 import TypographyH4 from '@/components/ui/typography/typography-h4'
+import TypographyP from '@/components/ui/typography/typography-p'
 import { useAppDispatch, useAppSelector } from '@/hooks/store-hook'
 import { ROUTES } from '@/routes'
 import {
@@ -76,16 +76,17 @@ const PageTrainingWords = () => {
             </TypographyH2>
             <div className='flex flex-col gap-2'>
               {question?.answers?.map((answer, index) => (
-                <Button
-                  key={index}
-                  className='w-full text-wrap h-auto text-base'
-                  variant={'outline'}
-                  onClick={() =>
-                    handleAnswer(answer === question.correctAnswer)
-                  }
-                >
+                <div
+                key={index}
+                className='w-full text-wrap h-auto p-3 rounded-xl border flex items-center justify-start gap-2 transition-colors cursor-pointer hover:bg-muted'
+                onClick={() =>
+                  handleAnswer(answer === question.correctAnswer)
+                }
+              >
+                <TypographyP className='text-base font-medium'>
                   {answer}
-                </Button>
+                </TypographyP>
+              </div>
               ))}
             </div>
           </div>

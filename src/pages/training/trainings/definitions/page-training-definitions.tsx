@@ -1,14 +1,14 @@
 import FooterTraining from '@/components/trainings/footer-training'
 import HeaderTraining from '@/components/trainings/header-training'
 import LayoutTraining from '@/components/trainings/layout-training'
-import { Button } from '@/components/ui/button'
 import TypographyH3 from '@/components/ui/typography/typography-h3'
 import TypographyH4 from '@/components/ui/typography/typography-h4'
+import TypographyP from '@/components/ui/typography/typography-p'
 import { useAppDispatch, useAppSelector } from '@/hooks/store-hook'
 import { ROUTES } from '@/routes'
 import {
   selectorUserTrainingSlice,
-  setCorrectAnswerForWords,
+  setCorrectAnswerForDefinitions,
   updateProgressInDictionary,
 } from '@/store/reducers/userTrainingSlice'
 import { useEffect, useState } from 'react'
@@ -17,7 +17,9 @@ import { useNavigate } from 'react-router-dom'
 const PageTrainingDefinitions = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const { trainingDefinitions: trainingList } = useAppSelector(selectorUserTrainingSlice)
+  const { trainingDefinitions: trainingList } = useAppSelector(
+    selectorUserTrainingSlice
+  )
 
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [correctAnswers, setCorrectAnswers] = useState(0)
@@ -27,8 +29,10 @@ const PageTrainingDefinitions = () => {
   const numberOfTrainingWords = trainingList.length
   const question = trainingList[currentQuestion]
   const isTrainingFinished = currentQuestion >= numberOfTrainingWords - 1
-  const progress = Math.round((100 / (numberOfTrainingWords + 1)) * (currentQuestion + 1))
-  console.log(progress);
+  const progress = Math.round(
+    (100 / (numberOfTrainingWords + 1)) * (currentQuestion + 1)
+  )
+  console.log(progress)
 
   const handleClose = () => {
     navigate(ROUTES.TRAINING)
@@ -37,7 +41,7 @@ const PageTrainingDefinitions = () => {
   const handleAnswer = (isCorrect: boolean) => {
     setCurrentQuestion(currentQuestion + 1)
     if (isCorrect) {
-      dispatch(setCorrectAnswerForWords(currentQuestion))
+      dispatch(setCorrectAnswerForDefinitions(currentQuestion))
       setCorrectAnswers(correctAnswers + 1)
     } else {
       setIncorrectAnswers(incorrectAnswers + 1)
@@ -51,7 +55,7 @@ const PageTrainingDefinitions = () => {
     if (showResult) {
       dispatch(updateProgressInDictionary())
     }
-  }, [showResult, dispatch]);
+  }, [showResult, dispatch])
 
   return (
     <LayoutTraining>
@@ -74,18 +78,19 @@ const PageTrainingDefinitions = () => {
             <TypographyH3 className='text-center'>
               {question?.question}
             </TypographyH3>
-            <div className='flex flex-col gap-2'>
+            <div className='w-full flex flex-col gap-2'>
               {question?.answers?.map((answer, index) => (
-                <Button
+                <div
                   key={index}
-                  className='w-full text-wrap h-auto text-base'
-                  variant={'outline'}
+                  className='w-full text-wrap h-auto p-3 rounded-xl border flex items-center justify-center gap-2 transition-colors cursor-pointer hover:bg-muted'
                   onClick={() =>
                     handleAnswer(answer === question.correctAnswer)
                   }
                 >
-                  {answer}
-                </Button>
+                  <TypographyP className='text-base font-medium'>
+                    {answer}
+                  </TypographyP>
+                </div>
               ))}
             </div>
           </div>
