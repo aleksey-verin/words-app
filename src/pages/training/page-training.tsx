@@ -1,12 +1,18 @@
+import { UserDictionary } from '@/api/dictionary/types'
 import { Badge } from '@/components/ui/badge'
 import { buttonVariants } from '@/components/ui/button'
 import TopTitle from '@/components/ui/top-title'
+import TypographyH3 from '@/components/ui/typography/typography-h3'
 import TypographyH4 from '@/components/ui/typography/typography-h4'
 import TypographyP from '@/components/ui/typography/typography-p'
-import { useAppSelector } from '@/hooks/store-hook'
+import { useAppDispatch, useAppSelector } from '@/hooks/store-hook'
 import { cn } from '@/lib/utils'
 import { ROUTES } from '@/routes'
-import { selectorUserTrainingSlice } from '@/store/reducers/userTrainingSlice'
+import {
+  getTrainingQuestionsForDefinitions,
+  getTrainingQuestionsForWords,
+  selectorUserTrainingSlice,
+} from '@/store/reducers/userTrainingSlice'
 import { Link } from 'react-router-dom'
 
 const trainingItems = [
@@ -41,16 +47,36 @@ const trainingItems = [
 ]
 
 const PageTraining = () => {
+  const dispatch = useAppDispatch()
   const { allWordsForTraining } = useAppSelector(selectorUserTrainingSlice)
 
-  // const handleStartTrainingButton = (
-  //   userDictionary: UserDictionary,
-  //   count: number
-  // ) => {
-  //   dispatch(
-  //     getWordsForTraining({ dictionary: userDictionary, wordsCount: count })
-  //   )
-  // }
+  const handleStartTrainingButton = (
+    words_for_training: UserDictionary,
+    count: number,
+    target: string
+  ) => {
+    switch (target) {
+      case ROUTES.TRAINING_WORDS:
+        dispatch(
+          getTrainingQuestionsForWords({
+            dictionary: words_for_training,
+            wordsCount: count,
+          })
+        )
+        break
+      case ROUTES.TRAINING_DEFINITIONS:
+        dispatch(
+          getTrainingQuestionsForDefinitions({
+            dictionary: words_for_training,
+            wordsCount: count,
+          })
+        )
+        break
+
+      default:
+        break
+    }
+  }
   // useEffect(() => {
   //   dispatch(getAllWordsForTraining(dictionary))
   // }, [dictionary, dispatch])
@@ -61,14 +87,16 @@ const PageTraining = () => {
         Training<Badge variant='secondary'>{allWordsForTraining.length}</Badge>
       </TopTitle>
       <div className='flex-auto flex flex-col items-center justify-center gap-4'>
-        <TypographyH4>Choose your workout:</TypographyH4>
+        <TypographyH3>Choose your workout:</TypographyH3>
         <div className='w-full grid grid-cols-2 gap-4'>
           {trainingItems.map((item, index) => (
             <div
               key={index}
               className={cn(
                 'p-2 border rounded-lg flex flex-col gap-1 items-center',
-                item.min_count > allWordsForTraining.length ? 'opacity-50 pointer-events-none' : ''
+                item.min_count > allWordsForTraining.length
+                  ? 'opacity-50 pointer-events-none'
+                  : ''
               )}
             >
               <TypographyH4>{item.title}</TypographyH4>
@@ -77,7 +105,13 @@ const PageTraining = () => {
               </TypographyP>
               <Link
                 to={item.to}
-                // onClick={() => handleStartTrainingButton(dictionary, item.max_count)}
+                onClick={() =>
+                  handleStartTrainingButton(
+                    allWordsForTraining,
+                    item.max_count,
+                    item.to
+                  )
+                }
                 className={cn(
                   'w-full max-w-52',
                   buttonVariants({ variant: 'outline' }),
@@ -86,7 +120,9 @@ const PageTraining = () => {
                     : ''
                 )}
               >
-                {item.min_count > allWordsForTraining.length ? 'Need more words' : 'Go to training!'}
+                {item.min_count > allWordsForTraining.length
+                  ? 'Need more words'
+                  : 'Go to training!'}
               </Link>
             </div>
           ))}

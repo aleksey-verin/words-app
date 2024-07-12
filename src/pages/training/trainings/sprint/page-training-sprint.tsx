@@ -13,7 +13,7 @@ const PageTrainingSprint = () => {
 
   return (
     <LayoutTraining>
-      <HeaderTraining handleClose={handleClose} />
+      <HeaderTraining progress={0} handleClose={handleClose} />
       <div>PageTrainingWords</div>
       <FooterTraining correct={5} incorrect={0} />
     </LayoutTraining>
