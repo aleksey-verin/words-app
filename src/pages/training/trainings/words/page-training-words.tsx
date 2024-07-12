@@ -60,7 +60,7 @@ const PageTrainingWords = () => {
   return (
     <LayoutTraining>
       <HeaderTraining progress={progress} handleClose={handleClose} />
-      <div className='w-full flex-auto flex flex-col'>
+      <div className='w-full flex-auto flex flex-col gap-5'>
         <TypographyH4>
           Choose the correct definition for the given word:
         </TypographyH4>
@@ -74,7 +74,7 @@ const PageTrainingWords = () => {
             </TypographyH4>
           </div>
         ) : (
-          <div className='flex-auto flex flex-col items-center justify-center gap-6'>
+          <div className='flex-auto flex flex-col items-center justify-center gap-5'>
             <TypographyH2 className='text-center text-balance'>
               {question?.question}
             </TypographyH2>
@@ -82,7 +82,7 @@ const PageTrainingWords = () => {
               {question?.answers?.map((answer, index) => (
                 <div
                   key={index}
-                  className='w-full text-wrap h-auto p-3 rounded-xl border flex items-center justify-start gap-2 transition-colors cursor-pointer active:bg-muted'
+                  className='w-full text-wrap h-auto p-3 rounded-xl border flex items-center justify-start gap-2 transition-colors cursor-pointer active:bg-muted sm:hover:bg-muted'
                   onClick={() =>
                     handleAnswer(answer === question.correctAnswer)
                   }

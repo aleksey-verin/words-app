@@ -88,7 +88,7 @@ const SearchResult = () => {
                     'p-2 border rounded-lg flex flex-col gap-1',
                     isWordInDictionary &&
                       wordInDictionary?.definitions.includes(item.definition)
-                      ? 'bg-slate-100'
+                      ? 'bg-slate-100 dark:bg-slate-900'
                       : ''
                   )}
                 >
