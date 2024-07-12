@@ -60,16 +60,7 @@ const PageTrainingWords = () => {
         <TypographyH4>
           Choose the correct definition for the given word:
         </TypographyH4>
-        {showResult ? (
-          <div className='flex flex-col gap-2'>
-            <TypographyH4>
-              You answered {correctAnswers} correct answers
-            </TypographyH4>
-            <TypographyH4>
-              You answered {incorrectAnswers} incorrect answers
-            </TypographyH4>
-          </div>
-        ) : (
+
           <div className='flex-auto flex flex-col items-center justify-center gap-6'>
             <TypographyH2 className='text-center text-balance'>
               {question?.question}
@@ -78,7 +69,7 @@ const PageTrainingWords = () => {
               {question?.answers?.map((answer, index) => (
                 <div
                 key={index}
-                className='w-full text-wrap h-auto p-3 rounded-xl border flex items-center justify-start gap-2 transition-colors cursor-pointer hover:bg-muted'
+                className='w-full text-wrap h-auto p-3 rounded-xl border flex items-center justify-start gap-2 transition-colors cursor-pointer active:bg-muted'
                 onClick={() =>
                   handleAnswer(answer === question.correctAnswer)
                 }
@@ -90,7 +81,7 @@ const PageTrainingWords = () => {
               ))}
             </div>
           </div>
-        )}
+
       </div>
       <FooterTraining correct={correctAnswers} incorrect={incorrectAnswers} />
     </LayoutTraining>
@@ -98,3 +89,15 @@ const PageTrainingWords = () => {
 }
 
 export default PageTrainingWords
+
+
+// {showResult ? (
+//   <div className='flex flex-col gap-2'>
+//     <TypographyH4>
+//       You answered {correctAnswers} correct answers
+//     </TypographyH4>
+//     <TypographyH4>
+//       You answered {incorrectAnswers} incorrect answers
+//     </TypographyH4>
+//   </div>
+// ) : (

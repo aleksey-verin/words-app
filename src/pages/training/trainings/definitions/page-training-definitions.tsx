@@ -82,7 +82,7 @@ const PageTrainingDefinitions = () => {
               {question?.answers?.map((answer, index) => (
                 <div
                   key={index}
-                  className='w-full text-wrap h-auto p-3 rounded-xl border flex items-center justify-center gap-2 transition-colors cursor-pointer hover:bg-muted'
+                  className='w-full text-wrap h-auto p-3 rounded-xl border flex items-center justify-center gap-2 transition-colors cursor-pointer active:bg-muted'
                   onClick={() =>
                     handleAnswer(answer === question.correctAnswer)
                   }
