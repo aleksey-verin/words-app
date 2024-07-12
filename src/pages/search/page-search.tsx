@@ -11,7 +11,7 @@ const PageSearch = () => {
     useAppSelector(selectorSearchSlice)
 
   return (
-    <main className='relative h-full pt-3 px-2 flex flex-col gap-4'>
+    <main className='relative min-h-dvh pt-3 px-2 flex flex-col gap-4'>
       <TopTitle>Search for the meaning</TopTitle>
       <div
         className={cn(

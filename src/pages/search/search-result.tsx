@@ -52,7 +52,7 @@ const SearchResult = () => {
   const isWordInDictionary = wordInDictionary ? true : false
 
   return (
-    <div className='flex flex-col gap-2'>
+    <div className='w-full flex flex-col gap-2'>
       <div className='flex items-center justify-between flex-wrap gap-1'>
         <h4 className='scroll-m-20 text-xl font-semibold tracking-tight'>
           {`${requestedWord}${

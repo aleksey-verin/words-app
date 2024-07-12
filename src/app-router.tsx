@@ -34,7 +34,7 @@ function AppRouter() {
   }, [])
 
   return (
-    <div className='h-full bg-background font-sans antialiased relative'>
+    <div className='min-h-full bg-background font-sans antialiased relative'>
       <HashRouter>
         <Toaster />
         {isAuth ? (
