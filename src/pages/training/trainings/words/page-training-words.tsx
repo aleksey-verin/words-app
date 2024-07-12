@@ -71,7 +71,7 @@ const PageTrainingWords = () => {
           </div>
         ) : (
           <div className='flex-auto flex flex-col items-center justify-center gap-6'>
-            <TypographyH2 className='text-center'>
+            <TypographyH2 className='text-center text-balance'>
               {question?.question}
             </TypographyH2>
             <div className='flex flex-col gap-2'>

@@ -75,7 +75,7 @@ const PageTrainingDefinitions = () => {
           </div>
         ) : (
           <div className='flex-auto flex flex-col items-center justify-center gap-6'>
-            <TypographyH3 className='text-center'>
+            <TypographyH3 className='text-center text-balance'>
               {question?.question}
             </TypographyH3>
             <div className='w-full flex flex-col gap-2'>
