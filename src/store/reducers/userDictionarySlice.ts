@@ -9,6 +9,7 @@ import {
   removeWordFromUserDictionary,
   updateListOfWordsInUserDictionary,
 } from '@/api/dictionary/dictionary'
+import { getAllWordsForTraining } from './userTrainingSlice'
 
 export interface UserAuthInitialState {
   dictionary: UserDictionary
@@ -39,6 +40,7 @@ export const getDictionary = createAsyncThunk<
     if (!email) return thunkAPI.rejectWithValue('no user for get dictionary')
     const data = await getUserDictionary(email)
     if (data) {
+      thunkAPI.dispatch(getAllWordsForTraining(data))
       return data
     } else {
       return thunkAPI.rejectWithValue('no dictionary')

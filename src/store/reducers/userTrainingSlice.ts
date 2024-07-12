@@ -1,9 +1,10 @@
 import { UserDictionary } from '@/api/dictionary/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { getRandomWords } from '@/api/training/training'
+import { getRandomAndMixedWords, getTrainingWords } from '@/api/training/training'
 
 export interface UserAuthInitialState {
+  allWordsForTraining: UserDictionary
   trainingWords: UserDictionary
   // isLoading: boolean
   // isSuccess: boolean
@@ -11,6 +12,7 @@ export interface UserAuthInitialState {
 }
 
 const initialState: UserAuthInitialState = {
+  allWordsForTraining: [],
   trainingWords: [],
   // isLoading: false,
   // isSuccess: false,
@@ -40,7 +42,10 @@ export const userTrainingSlice = createSlice({
   initialState,
   reducers: {
     getWordsForTraining(state, { payload }: PayloadAction<{ dictionary: UserDictionary, wordsCount: number}>) {
-      state.trainingWords = getRandomWords(payload.dictionary, payload.wordsCount);
+      state.trainingWords = getRandomAndMixedWords(payload.dictionary, payload.wordsCount);
+    },
+    getAllWordsForTraining(state, { payload }: PayloadAction<UserDictionary>) {
+      state.allWordsForTraining = getTrainingWords(payload);
     }
   },
   // extraReducers: (builder) => {
@@ -64,7 +69,7 @@ export const userTrainingSlice = createSlice({
   // },
 })
 
-export const { getWordsForTraining } = userTrainingSlice.actions
+export const { getWordsForTraining, getAllWordsForTraining } = userTrainingSlice.actions
 export const selectorUserTrainingSlice = (state: RootState) =>
   state.userTrainingSlice
 
