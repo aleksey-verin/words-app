@@ -2,6 +2,7 @@ import { UserDictionary } from '@/api/dictionary/types'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppDispatch, RootState } from '../store'
 import {
+  generateLettersQuestions,
   generateTrainingQuestionsForDefinitions,
   generateTrainingQuestionsForWords,
   generateTrueFalseQuestions,
@@ -106,6 +107,9 @@ export const userTrainingSlice = createSlice({
           state.trainingList = generateTrueFalseQuestions(
             wordsForCurrentTraining
           )
+          break
+        case 'LETTERS':
+          state.trainingList = generateLettersQuestions(wordsForCurrentTraining)
           break
         default:
           break

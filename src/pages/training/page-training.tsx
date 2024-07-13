@@ -49,15 +49,15 @@ const trainingItems: TrainingItem[] = [
     to: ROUTES.TRAINING_SPRINT,
     type: 'SPRINT',
     min_count: 10,
-    max_count: 20,
+    max_count: 15,
   },
   {
     title: 'Letters',
     description: 'Make up the correct word from the given letters.',
     to: ROUTES.TRAINING_LETTERS,
     type: 'LETTERS',
-    min_count: 10,
-    max_count: 10,
+    min_count: 4,
+    max_count: 5,
   },
 ]
 

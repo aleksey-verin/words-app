@@ -1,31 +1,6 @@
 import { UserDictionary } from '../dictionary/types'
 import { TrainingQuestion } from './types'
 
-// --> не используется
-export function getRandomWords(
-  words: UserDictionary,
-  amount: number
-): UserDictionary {
-  // Фильтруем массив, оставляя только объекты с progress меньше 100
-  const filteredWords = words.filter((wordObj) => wordObj.progress < 100)
-
-  // Создаем глубокую копию отфильтрованного массива для обеспечения иммутабельности
-  const deepCopiedWords = JSON.parse(JSON.stringify(filteredWords))
-
-  // Алгоритм Фишера-Йетса для случайного перемешивания массива
-  for (let i = deepCopiedWords.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[deepCopiedWords[i], deepCopiedWords[j]] = [
-      deepCopiedWords[j],
-      deepCopiedWords[i],
-    ]
-  }
-
-  // Возвращаем первые `amount` объектов
-  return deepCopiedWords.slice(0, amount)
-}
-// <-- не используется
-
 export function getTrainingWords(words: UserDictionary): UserDictionary {
   const filteredWords = words.filter((wordObj) => wordObj.progress < 100)
   const deepCopiedWords = JSON.parse(JSON.stringify(filteredWords))
@@ -58,7 +33,7 @@ export function generateTrainingQuestionsForWords(
     (singleWord) => singleWord.definitions
   )
 
-  return training_list.map((singleWord, index) => {
+  return training_list.map((singleWord) => {
     // Извлекаем правильный ответ
     const correctAnswer = singleWord.definitions[0]
 
@@ -75,7 +50,6 @@ export function generateTrainingQuestionsForWords(
 
     return {
       question: singleWord.word,
-      index: index,
       answers: answers,
       correctAnswer: correctAnswer,
       isUserAnswerCorrect: false,
@@ -83,65 +57,97 @@ export function generateTrainingQuestionsForWords(
   })
 }
 
-export function generateTrainingQuestionsForDefinitions(training_list: UserDictionary): TrainingQuestion[] {
+export function generateTrainingQuestionsForDefinitions(
+  training_list: UserDictionary
+): TrainingQuestion[] {
   // Собираем все возможные слова для случайного выбора неправильных ответов
-  const allWords: string[] = training_list.map(singleWord => singleWord.word);
+  const allWords: string[] = training_list.map((singleWord) => singleWord.word)
 
-  return training_list.map((singleWord, index) => {
+  return training_list.map((singleWord) => {
     // Выбираем случайное определение как вопрос
-    const question = singleWord.definitions[Math.floor(Math.random() * singleWord.definitions.length)];
+    const question =
+      singleWord.definitions[
+        Math.floor(Math.random() * singleWord.definitions.length)
+      ]
 
     // Извлекаем правильный ответ
-    const correctAnswer = singleWord.word;
+    const correctAnswer = singleWord.word
 
     // Выбираем случайные ответы, исключая правильный ответ
     const wrongAnswers = allWords
-      .filter(word => word !== correctAnswer)
+      .filter((word) => word !== correctAnswer)
       .sort(() => 0.5 - Math.random())
-      .slice(0, 3);
+      .slice(0, 3)
 
     // Собираем 4 ответа, включая правильный, и перемешиваем их
-    const answers = [correctAnswer, ...wrongAnswers].sort(() => 0.5 - Math.random());
+    const answers = [correctAnswer, ...wrongAnswers].sort(
+      () => 0.5 - Math.random()
+    )
 
     return {
       question: question,
-      index: index,
       answers: answers,
       correctAnswer: correctAnswer,
-      isUserAnswerCorrect: false
-    };
-  });
+      isUserAnswerCorrect: false,
+    }
+  })
 }
 
-export function generateTrueFalseQuestions(training_list: UserDictionary): TrainingQuestion[] {
-  return training_list.map((singleWord, index) => {
+export function generateTrueFalseQuestions(
+  training_list: UserDictionary
+): TrainingQuestion[] {
+  return training_list.map((singleWord) => {
     // Решаем случайным образом, будет ли значение правильным или нет
-    const isCorrectAnswer = Math.random() > 0.5;
+    const isCorrectAnswer = Math.random() > 0.5
 
-    let displayedDefinition: string;
-    let correctDefinition: string;
+    let displayedDefinition: string
+    let correctDefinition: string
 
     if (isCorrectAnswer) {
       // Если правильный ответ, выбираем случайное определение из текущего слова
-      displayedDefinition = singleWord.definitions[Math.floor(Math.random() * singleWord.definitions.length)];
-      correctDefinition = displayedDefinition;
+      displayedDefinition =
+        singleWord.definitions[
+          Math.floor(Math.random() * singleWord.definitions.length)
+        ]
+      correctDefinition = displayedDefinition
     } else {
       // Если неправильный ответ, выбираем случайное определение из других слов
       const otherDefinitions = training_list
-        .flatMap(word => word.definitions)
-        .filter(def => !singleWord.definitions.includes(def));
-      displayedDefinition = otherDefinitions[Math.floor(Math.random() * otherDefinitions.length)];
-      correctDefinition = singleWord.definitions[Math.floor(Math.random() * singleWord.definitions.length)];
+        .flatMap((word) => word.definitions)
+        .filter((def) => !singleWord.definitions.includes(def))
+      displayedDefinition =
+        otherDefinitions[Math.floor(Math.random() * otherDefinitions.length)]
+      correctDefinition =
+        singleWord.definitions[
+          Math.floor(Math.random() * singleWord.definitions.length)
+        ]
     }
 
     return {
       question: singleWord.word,
-      index: index,
       answers: [displayedDefinition],
       correctAnswer: correctDefinition,
-      isUserAnswerCorrect: false
-    };
-  });
+      isUserAnswerCorrect: false,
+    }
+  })
+}
+
+export function generateLettersQuestions(
+  training_list: UserDictionary
+): TrainingQuestion[] {
+  return training_list.map((singleWord) => {
+    const question =
+      singleWord.definitions[
+        Math.floor(Math.random() * singleWord.definitions.length)
+      ]
+
+    return {
+      question: question,
+      answers: [singleWord.word],
+      correctAnswer: singleWord.word,
+      isUserAnswerCorrect: false,
+    }
+  })
 }
 
 export function updateResultInTrainingList(
@@ -153,7 +159,8 @@ export function updateResultInTrainingList(
 
   trainingWords.forEach((item, index) => {
     if (item.isUserAnswerCorrect === true) {
-      deepCopiedWords[index].progress = deepCopiedWords[index].progress + stepForProgress
+      deepCopiedWords[index].progress =
+        deepCopiedWords[index].progress + stepForProgress
     }
   })
 

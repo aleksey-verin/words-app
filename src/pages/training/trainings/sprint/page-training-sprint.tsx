@@ -62,7 +62,7 @@ const PageTrainingSprint = () => {
       <HeaderTraining progress={progress} handleClose={handleClose} />
       <div className='w-full flex-auto flex flex-col gap-5'>
         <TypographyH4>
-          Choose the correct definition for the given word:
+          Fast learning of many words in a short period of time:
         </TypographyH4>
         {showResult ? (
           <div className='flex flex-col gap-2'>
