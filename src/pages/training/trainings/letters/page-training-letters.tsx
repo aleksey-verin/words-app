@@ -131,7 +131,7 @@ const PageTrainingLetters = () => {
                   {userAnswer.map((item) => (
                     <button
                       key={item.id}
-                      className='w-8 h-8 border rounded-md flex items-center justify-center cursor-pointer bg-muted touch-manipulation'
+                      className='w-8 h-8 border rounded-md flex items-center justify-center cursor-pointer bg-muted'
                       onClick={() => handleClickResultLetter(item)}
                     >
                       {item.letter}
@@ -141,11 +141,11 @@ const PageTrainingLetters = () => {
               </div>
             </div>
             <div className='w-full h-[20dvh] flex items-center justify-center'>
-              <div className='grid grid-cols-5 justify-center gap-1 touch-manipulation'>
+              <div className='grid grid-cols-5 justify-center gap-1'>
                 {answer.map((item) => (
                   <button
                     className={cn(
-                      'w-10 h-10 border rounded-md flex items-center justify-center cursor-pointer touch-manipulation',
+                      'w-10 h-10 border rounded-md flex items-center justify-center cursor-pointer',
                       item.isPressed && 'opacity-0 pointer-events-none',
                       shownFirstLetter &&
                         item.id === correctAnswer[0].id &&
