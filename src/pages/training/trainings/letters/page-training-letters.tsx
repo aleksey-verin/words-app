@@ -6,13 +6,14 @@ import { Button } from '@/components/ui/button'
 import TypographyH2 from '@/components/ui/typography/typography-h2'
 import TypographyH4 from '@/components/ui/typography/typography-h4'
 import { useAppDispatch, useAppSelector } from '@/hooks/store-hook'
+import { cn } from '@/lib/utils'
 import { ROUTES } from '@/routes'
 import {
   selectorUserTrainingSlice,
   setCorrectAnswerInTrainingList,
-  // setCorrectAnswerForWords,
   updateProgressInDictionary,
 } from '@/store/reducers/userTrainingSlice'
+import { MessageCircleQuestion, Repeat1 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -33,9 +34,13 @@ const PageTrainingLetters = () => {
     (100 / (numberOfTrainingWords + 1)) * (currentQuestion + 1)
   )
 
-  const correctAnswer = useMemo(() => getLettersArray(question.answers),[question])
+  const correctAnswer = useMemo(
+    () => getLettersArray(question.answers),
+    [question]
+  )
   const [answer, setAnswer] = useState<Letter[]>(shuffleArray(correctAnswer))
   const [userAnswer, setUserAnswer] = useState<Letter[]>([])
+  const [shownFirstLetter, setShownFirstLetter] = useState(false)
 
   const handleClose = () => {
     navigate(ROUTES.TRAINING)
@@ -43,7 +48,6 @@ const PageTrainingLetters = () => {
 
   const handleResult = () => {
     setCurrentQuestion(currentQuestion + 1)
-    // setUserAnswer([])
 
     const finalAnswer = userAnswer.map((item) => item.letter).join('')
     const targetAnswer = question.answers.join('').toLocaleUpperCase()
@@ -62,16 +66,36 @@ const PageTrainingLetters = () => {
   useEffect(() => {
     setAnswer(shuffleArray(correctAnswer))
     setUserAnswer([])
-  }, [correctAnswer, currentQuestion]);
+  }, [correctAnswer, currentQuestion])
 
   const handleClickAnswerLetter = (letter: Letter) => {
     setUserAnswer([...userAnswer, letter])
-    setAnswer(answer.filter((item) => item.id !== letter.id))
+    setAnswer(
+      answer.map((item) =>
+        item.id === letter.id ? { ...item, isPressed: true } : item
+      )
+    )
   }
 
   const handleClickResultLetter = (letter: Letter) => {
-    setAnswer([...answer, letter])
     setUserAnswer(userAnswer.filter((item) => item.id !== letter.id))
+    setAnswer(
+      answer.map((item) =>
+        item.id === letter.id ? { ...item, isPressed: false } : item
+      )
+    )
+  }
+
+  const handleRepeat = () => {
+    setUserAnswer([])
+    setAnswer((prev) => prev.map((item) => ({ ...item, isPressed: false })))
+  }
+
+  const handleHelp = () => {
+    setShownFirstLetter(true)
+    setTimeout(() => {
+      setShownFirstLetter(false)
+    }, 1500)
   }
 
   useEffect(() => {
@@ -105,15 +129,13 @@ const PageTrainingLetters = () => {
               <div className='w-full flex-auto text-wrap h-auto p-3 rounded-xl border flex items-center justify-center'>
                 <div className='w-full flex justify-center flex-wrap gap-1'>
                   {userAnswer.map((item) => (
-                    <Button
+                    <button
                       key={item.id}
-                      variant={'outline'}
-                      size={'sm'}
-                      className='bg-green-200 dark:bg-green-900'
+                      className='w-8 h-8 border rounded-md flex items-center justify-center cursor-pointer bg-green-200 dark:bg-green-900'
                       onClick={() => handleClickResultLetter(item)}
                     >
                       {item.letter}
-                    </Button>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -121,19 +143,41 @@ const PageTrainingLetters = () => {
             <div className='w-full h-[20dvh] flex items-center justify-center'>
               <div className='grid grid-cols-5 justify-center gap-1'>
                 {answer.map((item) => (
-                  <div
-                    className='w-10 h-10 border rounded-md flex items-center justify-center cursor-pointer'
+                  <button
+                    className={cn(
+                      'w-10 h-10 border rounded-md flex items-center justify-center cursor-pointer',
+                      item.isPressed && 'opacity-0 pointer-events-none',
+                      shownFirstLetter &&
+                        item.id === correctAnswer[0].id &&
+                        'bg-green-200 dark:bg-green-900'
+                    )}
                     key={item.id}
                     onClick={() => handleClickAnswerLetter(item)}
                   >
                     {item.letter}
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
-            <div className='w-full h-[10dvh] flex gap-2 items-center justify-center'>
-              <Button size={'lg'} onClick={handleResult}>
+            <div className='w-full h-[10dvh] flex gap-2 items-center justify-evenly'>
+              <Button
+                size={'icon'}
+                variant='ghost'
+                onClick={handleRepeat}
+                title='Repeat'
+              >
+                <Repeat1 className='w-6 h-6' />
+              </Button>
+              <Button size={'lg'} onClick={handleResult} title='Check answer'>
                 Check answer
+              </Button>
+              <Button
+                size={'icon'}
+                variant='ghost'
+                onClick={handleHelp}
+                title='Show first letter'
+              >
+                <MessageCircleQuestion className='w-6 h-6' />
               </Button>
             </div>
           </div>
@@ -149,6 +193,7 @@ export default PageTrainingLetters
 interface Letter {
   id: number
   letter: string
+  isPressed: boolean
 }
 
 function getLettersArray(word: string[]): Letter[] {
@@ -157,5 +202,6 @@ function getLettersArray(word: string[]): Letter[] {
   return lettersArray.map((letter, index) => ({
     id: index,
     letter,
+    isPressed: false,
   }))
 }
