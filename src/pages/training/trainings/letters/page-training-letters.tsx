@@ -152,6 +152,7 @@ const PageTrainingLetters = () => {
                         'bg-muted'
                     )}
                     key={item.id}
+                    onTouchStart={() => handleClickAnswerLetter(item)}
                     onClick={() => handleClickAnswerLetter(item)}
                   >
                     {item.letter}
