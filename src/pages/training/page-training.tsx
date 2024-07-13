@@ -124,7 +124,7 @@ const PageTraining = () => {
               >
                 {item.min_count > allWordsForTraining.length
                   ? 'Need more words'
-                  : 'Go to training!'}
+                  : 'GO!'}
               </Link>
             </div>
           ))}
