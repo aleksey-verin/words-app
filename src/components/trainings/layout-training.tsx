@@ -4,7 +4,7 @@ interface LayoutTrainingProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const LayoutTraining = ({ className, children, ...props }: LayoutTrainingProps) => {
   return (
-    <div className={cn('w-full h-full flex flex-col items-center justify-between gap-2 p-2', className)} {...props}>
+    <div className={cn('w-full min-h-dvh flex flex-col items-center justify-between gap-2 p-2 pb-4', className)} {...props}>
       {children}
     </div>
   )

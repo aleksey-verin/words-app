@@ -82,7 +82,7 @@ const PageTraining = () => {
   // }, [dictionary, dispatch])
 
   return (
-    <main className='h-full pt-3 px-2 pb-16 flex flex-col gap-4'>
+    <main className='min-h-dvh pt-3 px-2 pb-20 flex flex-col gap-4'>
       <TopTitle className='flex items-center gap-2'>
         Training<Badge variant='secondary'>{allWordsForTraining.length}</Badge>
       </TopTitle>
