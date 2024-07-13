@@ -49,7 +49,7 @@ const trainingItems: TrainingItem[] = [
     to: ROUTES.TRAINING_SPRINT,
     type: 'SPRINT',
     min_count: 10,
-    max_count: 10,
+    max_count: 20,
   },
   {
     title: 'Letters',

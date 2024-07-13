@@ -113,6 +113,37 @@ export function generateTrainingQuestionsForDefinitions(training_list: UserDicti
   });
 }
 
+export function generateTrueFalseQuestions(training_list: UserDictionary): TrainingQuestion[] {
+  return training_list.map((singleWord, index) => {
+    // Решаем случайным образом, будет ли значение правильным или нет
+    const isCorrectAnswer = Math.random() > 0.5;
+
+    let displayedDefinition: string;
+    let correctDefinition: string;
+
+    if (isCorrectAnswer) {
+      // Если правильный ответ, выбираем случайное определение из текущего слова
+      displayedDefinition = singleWord.definitions[Math.floor(Math.random() * singleWord.definitions.length)];
+      correctDefinition = displayedDefinition;
+    } else {
+      // Если неправильный ответ, выбираем случайное определение из других слов
+      const otherDefinitions = training_list
+        .flatMap(word => word.definitions)
+        .filter(def => !singleWord.definitions.includes(def));
+      displayedDefinition = otherDefinitions[Math.floor(Math.random() * otherDefinitions.length)];
+      correctDefinition = singleWord.definitions[Math.floor(Math.random() * singleWord.definitions.length)];
+    }
+
+    return {
+      question: singleWord.word,
+      index: index,
+      answers: [displayedDefinition],
+      correctAnswer: correctDefinition,
+      isUserAnswerCorrect: false
+    };
+  });
+}
+
 export function updateResultInTrainingList(
   wordForCurrentTraining: UserDictionary,
   trainingWords: TrainingQuestion[],

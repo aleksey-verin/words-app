@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from '../store'
 import {
   generateTrainingQuestionsForDefinitions,
   generateTrainingQuestionsForWords,
+  generateTrueFalseQuestions,
   getRandomAndMixedWords,
   getTrainingWords,
   updateResultInTrainingList,
@@ -101,6 +102,11 @@ export const userTrainingSlice = createSlice({
             wordsForCurrentTraining
           )
           break
+        case 'SPRINT':
+          state.trainingList = generateTrueFalseQuestions(
+            wordsForCurrentTraining
+          )
+          break
         default:
           break
       }
@@ -147,7 +153,7 @@ export const userTrainingSlice = createSlice({
 export const {
   getAllWordsForTraining,
   getTrainingList,
-  setCorrectAnswerInTrainingList
+  setCorrectAnswerInTrainingList,
   // getTrainingQuestionsForDefinitions,
   // setCorrectAnswerForWords,
   // setCorrectAnswerForDefinitions,
