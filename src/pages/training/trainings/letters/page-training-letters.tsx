@@ -131,7 +131,7 @@ const PageTrainingLetters = () => {
                   {userAnswer.map((item) => (
                     <button
                       key={item.id}
-                      className='w-8 h-8 border rounded-md flex items-center justify-center cursor-pointer bg-muted'
+                      className='w-8 h-8 border rounded-md flex items-center justify-center cursor-pointer bg-muted touch-manipulation'
                       onClick={() => handleClickResultLetter(item)}
                     >
                       {item.letter}
@@ -145,7 +145,7 @@ const PageTrainingLetters = () => {
                 {answer.map((item) => (
                   <button
                     className={cn(
-                      'w-10 h-10 border rounded-md flex items-center justify-center cursor-pointer',
+                      'w-10 h-10 border rounded-md flex items-center justify-center cursor-pointer touch-manipulation',
                       item.isPressed && 'opacity-0 pointer-events-none',
                       shownFirstLetter &&
                         item.id === correctAnswer[0].id &&
