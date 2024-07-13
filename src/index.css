@@ -91,9 +91,15 @@
 
   body {
     height: 100%;
+    touch-action: manipulation;
   }
   
   #root {
     height: 100%;
     min-width: 320px;
+    touch-action: manipulation;
+  }
+
+  :root {
+    touch-action: manipulation;
   }
