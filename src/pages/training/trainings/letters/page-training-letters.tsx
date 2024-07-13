@@ -35,7 +35,7 @@ const PageTrainingLetters = () => {
   )
 
   const correctAnswer = useMemo(
-    () => getLettersArray(question.answers),
+    () => question?.answers ? getLettersArray(question?.answers) : [],
     [question]
   )
   const [answer, setAnswer] = useState<Letter[]>(shuffleArray(correctAnswer))
