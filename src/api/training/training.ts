@@ -78,7 +78,7 @@ export function generateTrainingQuestionsForWords(
       index: index,
       answers: answers,
       correctAnswer: correctAnswer,
-      userResultCorrect: false,
+      isUserAnswerCorrect: false,
     }
   })
 }
@@ -108,7 +108,7 @@ export function generateTrainingQuestionsForDefinitions(training_list: UserDicti
       index: index,
       answers: answers,
       correctAnswer: correctAnswer,
-      userResultCorrect: false
+      isUserAnswerCorrect: false
     };
   });
 }
@@ -121,7 +121,7 @@ export function updateResultInTrainingList(
   const deepCopiedWords = JSON.parse(JSON.stringify(wordForCurrentTraining))
 
   trainingWords.forEach((item, index) => {
-    if (item.userResultCorrect === true) {
+    if (item.isUserAnswerCorrect === true) {
       deepCopiedWords[index].progress = deepCopiedWords[index].progress + stepForProgress
     }
   })

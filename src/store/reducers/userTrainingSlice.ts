@@ -11,13 +11,15 @@ import {
 import { TrainingQuestion } from '@/api/training/types'
 import { updateDictionary } from './userDictionarySlice'
 
+export type TrainingType = 'WORDS' | 'DEFINITIONS' | 'SPRINT' | 'LETTERS'
+
 export interface UserAuthInitialState {
   allWordsForTraining: UserDictionary
   wordsForCurrentTraining: UserDictionary
-  trainingWords: TrainingQuestion[]
-  trainingDefinitions: TrainingQuestion[]
-  trainingSprint: TrainingQuestion[]
-  trainingLetters: TrainingQuestion[]
+  trainingList: TrainingQuestion[]
+  // trainingDefinitions: TrainingQuestion[]
+  // trainingSprint: TrainingQuestion[]
+  // trainingLetters: TrainingQuestion[]
   stepForProgress: number
   isLoading: boolean
   isSuccess: boolean
@@ -27,10 +29,10 @@ export interface UserAuthInitialState {
 const initialState: UserAuthInitialState = {
   allWordsForTraining: [],
   wordsForCurrentTraining: [],
-  trainingWords: [],
-  trainingDefinitions: [],
-  trainingSprint: [],
-  trainingLetters: [],
+  trainingList: [],
+  // trainingDefinitions: [],
+  // trainingSprint: [],
+  // trainingLetters: [],
   stepForProgress: 20,
 
   isLoading: false,
@@ -49,13 +51,13 @@ export const updateProgressInDictionary = createAsyncThunk<
   try {
     const wordForCurrentTraining =
       thunkAPI.getState().userTrainingSlice.wordsForCurrentTraining
-    const trainingWords = thunkAPI.getState().userTrainingSlice.trainingWords
+    const trainingList = thunkAPI.getState().userTrainingSlice.trainingList
     const stepForProgress =
       thunkAPI.getState().userTrainingSlice.stepForProgress
 
     const listForUpdate = updateResultInTrainingList(
       wordForCurrentTraining,
-      trainingWords,
+      trainingList,
       stepForProgress
     )
     await thunkAPI.dispatch(updateDictionary(listForUpdate))
@@ -72,42 +74,58 @@ export const userTrainingSlice = createSlice({
     getAllWordsForTraining(state, { payload }: PayloadAction<UserDictionary>) {
       state.allWordsForTraining = getTrainingWords(payload)
     },
-    getTrainingQuestionsForWords(
+    getTrainingList(
       state,
       {
         payload,
-      }: PayloadAction<{ dictionary: UserDictionary; wordsCount: number }>
+      }: PayloadAction<{
+        type: TrainingType
+        dictionary: UserDictionary
+        wordsCount: number
+      }>
     ) {
       const wordsForCurrentTraining = getRandomAndMixedWords(
         payload.dictionary,
         payload.wordsCount
       )
       state.wordsForCurrentTraining = wordsForCurrentTraining
-      state.trainingWords = generateTrainingQuestionsForWords(
-        wordsForCurrentTraining
-      )
+
+      switch (payload.type) {
+        case 'WORDS':
+          state.trainingList = generateTrainingQuestionsForWords(
+            wordsForCurrentTraining
+          )
+          break
+        case 'DEFINITIONS':
+          state.trainingList = generateTrainingQuestionsForDefinitions(
+            wordsForCurrentTraining
+          )
+          break
+        default:
+          break
+      }
     },
-    getTrainingQuestionsForDefinitions(
-      state,
-      {
-        payload,
-      }: PayloadAction<{ dictionary: UserDictionary; wordsCount: number }>
-    ) {
-      const wordsForCurrentTraining = getRandomAndMixedWords(
-        payload.dictionary,
-        payload.wordsCount
-      )
-      state.wordsForCurrentTraining = wordsForCurrentTraining
-      state.trainingDefinitions = generateTrainingQuestionsForDefinitions(
-        wordsForCurrentTraining
-      )
+    // getTrainingQuestionsForDefinitions(
+    //   state,
+    //   {
+    //     payload,
+    //   }: PayloadAction<{ dictionary: UserDictionary; wordsCount: number }>
+    // ) {
+    //   const wordsForCurrentTraining = getRandomAndMixedWords(
+    //     payload.dictionary,
+    //     payload.wordsCount
+    //   )
+    //   state.wordsForCurrentTraining = wordsForCurrentTraining
+    //   state.trainingDefinitions = generateTrainingQuestionsForDefinitions(
+    //     wordsForCurrentTraining
+    //   )
+    // },
+    setCorrectAnswerInTrainingList(state, { payload }: PayloadAction<number>) {
+      state.trainingList[payload].isUserAnswerCorrect = true
     },
-    setCorrectAnswerForWords(state, { payload }: PayloadAction<number>) {
-      state.trainingWords[payload].userResultCorrect = true
-    },
-    setCorrectAnswerForDefinitions(state, { payload }: PayloadAction<number>) {
-      state.trainingDefinitions[payload].userResultCorrect = true
-    },
+    // setCorrectAnswerForDefinitions(state, { payload }: PayloadAction<number>) {
+    //   state.trainingDefinitions[payload].isUserAnswerCorrect = true
+    // },
   },
   extraReducers: (builder) => {
     builder.addCase(updateProgressInDictionary.pending, (state) => {
@@ -127,11 +145,12 @@ export const userTrainingSlice = createSlice({
 })
 
 export const {
-  getTrainingQuestionsForWords,
-  getTrainingQuestionsForDefinitions,
   getAllWordsForTraining,
-  setCorrectAnswerForWords,
-  setCorrectAnswerForDefinitions
+  getTrainingList,
+  setCorrectAnswerInTrainingList
+  // getTrainingQuestionsForDefinitions,
+  // setCorrectAnswerForWords,
+  // setCorrectAnswerForDefinitions,
 } = userTrainingSlice.actions
 export const selectorUserTrainingSlice = (state: RootState) =>
   state.userTrainingSlice

@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/store-hook'
 import { ROUTES } from '@/routes'
 import {
   selectorUserTrainingSlice,
-  setCorrectAnswerForDefinitions,
+  setCorrectAnswerInTrainingList,
   updateProgressInDictionary,
 } from '@/store/reducers/userTrainingSlice'
 import { useEffect, useState } from 'react'
@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom'
 const PageTrainingDefinitions = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const { trainingDefinitions: trainingList } = useAppSelector(
+  const { trainingList } = useAppSelector(
     selectorUserTrainingSlice
   )
 
@@ -41,7 +41,7 @@ const PageTrainingDefinitions = () => {
   const handleAnswer = (isCorrect: boolean) => {
     setCurrentQuestion(currentQuestion + 1)
     if (isCorrect) {
-      dispatch(setCorrectAnswerForDefinitions(currentQuestion))
+      dispatch(setCorrectAnswerInTrainingList(currentQuestion))
       setCorrectAnswers(correctAnswers + 1)
     } else {
       setIncorrectAnswers(incorrectAnswers + 1)

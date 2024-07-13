@@ -9,17 +9,29 @@ import { useAppDispatch, useAppSelector } from '@/hooks/store-hook'
 import { cn } from '@/lib/utils'
 import { ROUTES } from '@/routes'
 import {
-  getTrainingQuestionsForDefinitions,
-  getTrainingQuestionsForWords,
+  getTrainingList,
+  // getTrainingQuestionsForDefinitions,
+  // getTrainingQuestionsForWords,
   selectorUserTrainingSlice,
+  TrainingType,
 } from '@/store/reducers/userTrainingSlice'
 import { Link } from 'react-router-dom'
 
-const trainingItems = [
+interface TrainingItem {
+  title: string
+  description: string
+  to: string
+  type: TrainingType
+  min_count: number
+  max_count: number
+}
+
+const trainingItems: TrainingItem[] = [
   {
     title: 'Words',
     description: 'Choose the correct definition for the given word.',
     to: ROUTES.TRAINING_WORDS,
+    type: 'WORDS',
     min_count: 4,
     max_count: 10,
   },
@@ -27,6 +39,7 @@ const trainingItems = [
     title: 'Definitions',
     description: 'Choose the correct word for the given definition.',
     to: ROUTES.TRAINING_DEFINITIONS,
+    type: 'DEFINITIONS',
     min_count: 4,
     max_count: 10,
   },
@@ -34,6 +47,7 @@ const trainingItems = [
     title: 'Sprint',
     description: 'Fast learning of many words in a short period of time.',
     to: ROUTES.TRAINING_SPRINT,
+    type: 'SPRINT',
     min_count: 10,
     max_count: 10,
   },
@@ -41,6 +55,7 @@ const trainingItems = [
     title: 'Letters',
     description: 'Make up the correct word from the given letters.',
     to: ROUTES.TRAINING_LETTERS,
+    type: 'LETTERS',
     min_count: 10,
     max_count: 10,
   },
@@ -53,30 +68,17 @@ const PageTraining = () => {
   const handleStartTrainingButton = (
     words_for_training: UserDictionary,
     count: number,
-    target: string
+    type: TrainingType
   ) => {
-    switch (target) {
-      case ROUTES.TRAINING_WORDS:
         dispatch(
-          getTrainingQuestionsForWords({
+          getTrainingList({
+            type,
             dictionary: words_for_training,
             wordsCount: count,
           })
         )
-        break
-      case ROUTES.TRAINING_DEFINITIONS:
-        dispatch(
-          getTrainingQuestionsForDefinitions({
-            dictionary: words_for_training,
-            wordsCount: count,
-          })
-        )
-        break
-
-      default:
-        break
     }
-  }
+  
   // useEffect(() => {
   //   dispatch(getAllWordsForTraining(dictionary))
   // }, [dictionary, dispatch])
@@ -109,7 +111,7 @@ const PageTraining = () => {
                   handleStartTrainingButton(
                     allWordsForTraining,
                     item.max_count,
-                    item.to
+                    item.type
                   )
                 }
                 className={cn(
