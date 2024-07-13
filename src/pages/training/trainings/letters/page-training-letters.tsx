@@ -131,7 +131,7 @@ const PageTrainingLetters = () => {
                   {userAnswer.map((item) => (
                     <button
                       key={item.id}
-                      className='w-8 h-8 border rounded-md flex items-center justify-center cursor-pointer bg-green-200 dark:bg-green-900'
+                      className='w-8 h-8 border rounded-md flex items-center justify-center cursor-pointer bg-muted'
                       onClick={() => handleClickResultLetter(item)}
                     >
                       {item.letter}
@@ -149,7 +149,7 @@ const PageTrainingLetters = () => {
                       item.isPressed && 'opacity-0 pointer-events-none',
                       shownFirstLetter &&
                         item.id === correctAnswer[0].id &&
-                        'bg-green-200 dark:bg-green-900'
+                        'bg-muted'
                     )}
                     key={item.id}
                     onClick={() => handleClickAnswerLetter(item)}
