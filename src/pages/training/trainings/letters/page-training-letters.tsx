@@ -141,7 +141,7 @@ const PageTrainingLetters = () => {
               </div>
             </div>
             <div className='w-full h-[20dvh] flex items-center justify-center'>
-              <div className='grid grid-cols-5 justify-center gap-1'>
+              <div className='grid grid-cols-5 justify-center gap-1 touch-manipulation'>
                 {answer.map((item) => (
                   <button
                     className={cn(
