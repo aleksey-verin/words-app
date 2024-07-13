@@ -11,12 +11,12 @@ const PageSearch = () => {
     useAppSelector(selectorSearchSlice)
 
   return (
-    <main className='relative min-h-dvh pt-3 px-2 flex flex-col gap-4'>
+    <main className='relative min-h-dvh pt-4 px-4 flex flex-col gap-4'>
       <TopTitle>Search for the meaning</TopTitle>
       <div
         className={cn(
-          'absolute inset-x-2 flex flex-col justify-start items-center gap-4 transition-all duration-1000',
-          requestedResult ? 'top-14' : 'top-[calc(50%-2rem)]'
+          'absolute inset-x-4 flex flex-col justify-start items-center gap-4 transition-all duration-1000',
+          requestedResult ? 'top-16' : 'top-[calc(50%-2rem)]'
         )}
       >
         <SearchForm />

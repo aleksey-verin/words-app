@@ -14,13 +14,13 @@ const Header = () => {
 
   if (isLoading)
     return (
-      <header className='absolute top-0 right-0 z-50 flex w-auto items-center justify-end pt-2 pr-2'>
+      <header className='absolute top-0 right-0 z-50 flex w-auto items-center justify-end pt-4 pr-4'>
         <Skeleton className='w-10 h-10 rounded-full border' />
       </header>
     )
 
   return (
-    <header className='absolute top-0 right-0 z-50 flex w-auto items-center justify-end pt-2 pr-2'>
+    <header className='absolute top-0 right-0 z-50 flex w-auto items-center justify-end pt-4 pr-4'>
       {isAuth && userInfo ? (
         <Menu userInfo={userInfo} />
       ) : (

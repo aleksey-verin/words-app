@@ -8,7 +8,7 @@ const PageWords = () => {
   const { dictionary, isSuccess, isLoading, isError } = useAppSelector(selectorUserDictionarySlice)
 
   return (
-    <main className='h-full pt-3 px-2 pb-20 flex flex-col gap-4'>
+    <main className='h-full pt-4 px-4 pb-20 flex flex-col gap-4'>
       <TopTitle className='flex items-center gap-2'>My words<Badge variant='secondary'>{dictionary.length}</Badge></TopTitle>
       <WordsList dictionary={dictionary} isLoading={isLoading} isSuccess={isSuccess} isError={isError} />
     </main>
