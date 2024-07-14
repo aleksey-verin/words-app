@@ -46,7 +46,7 @@ const ResultTraining = ({
         <div className='w-full flex gap-1 items-center justify-between'>
           <Link
             to={ROUTES.TRAINING}
-            className={cn(buttonVariants({ variant: 'secondary' }), 'flex-1')}
+            className={cn(buttonVariants({ variant: 'default' }), 'flex-1')}
           >
             <CircleArrowLeft className='w-5 h-5 mr-2' />
             Trainings
