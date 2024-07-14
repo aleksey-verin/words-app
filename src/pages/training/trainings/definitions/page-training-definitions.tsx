@@ -1,6 +1,7 @@
 import FooterTraining from '@/components/trainings/footer-training'
 import HeaderTraining from '@/components/trainings/header-training'
 import LayoutTraining from '@/components/trainings/layout-training'
+import ResultTraining from '@/components/trainings/result-training'
 import TypographyH3 from '@/components/ui/typography/typography-h3'
 import TypographyH4 from '@/components/ui/typography/typography-h4'
 import TypographyP from '@/components/ui/typography/typography-p'
@@ -17,9 +18,7 @@ import { useNavigate } from 'react-router-dom'
 const PageTrainingDefinitions = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const { trainingList } = useAppSelector(
-    selectorUserTrainingSlice
-  )
+  const { trainingList } = useAppSelector(selectorUserTrainingSlice)
 
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [correctAnswers, setCorrectAnswers] = useState(0)
@@ -65,14 +64,11 @@ const PageTrainingDefinitions = () => {
           Choose the correct word for the given definition:
         </TypographyH4>
         {showResult ? (
-          <div className='flex flex-col gap-2'>
-            <TypographyH4>
-              You answered {correctAnswers} correct answers
-            </TypographyH4>
-            <TypographyH4>
-              You answered {incorrectAnswers} incorrect answers
-            </TypographyH4>
-          </div>
+          <ResultTraining
+            correct={correctAnswers}
+            incorrect={incorrectAnswers}
+            trainingList={trainingList}
+          />
         ) : (
           <div className='flex-auto flex flex-col items-center justify-center gap-5'>
             <TypographyH3 className='text-center text-balance'>

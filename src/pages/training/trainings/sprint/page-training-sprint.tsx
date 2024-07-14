@@ -1,6 +1,7 @@
 import FooterTraining from '@/components/trainings/footer-training'
 import HeaderTraining from '@/components/trainings/header-training'
 import LayoutTraining from '@/components/trainings/layout-training'
+import ResultTraining from '@/components/trainings/result-training'
 import { Button } from '@/components/ui/button'
 import TypographyH2 from '@/components/ui/typography/typography-h2'
 import TypographyH4 from '@/components/ui/typography/typography-h4'
@@ -65,14 +66,11 @@ const PageTrainingSprint = () => {
           Fast learning of many words in a short period of time:
         </TypographyH4>
         {showResult ? (
-          <div className='flex flex-col gap-2'>
-            <TypographyH4>
-              You answered {correctAnswers} correct answers
-            </TypographyH4>
-            <TypographyH4>
-              You answered {incorrectAnswers} incorrect answers
-            </TypographyH4>
-          </div>
+          <ResultTraining
+            correct={correctAnswers}
+            incorrect={incorrectAnswers}
+            trainingList={trainingList}
+          />
         ) : (
           <div className='flex-auto flex flex-col items-center justify-center gap-5'>
             <div className='w-full flex-auto flex flex-col gap-5 items-center justify-center'>
