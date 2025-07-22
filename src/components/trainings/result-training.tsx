@@ -19,7 +19,7 @@ const ResultTraining = ({
   return (
     <div className='flex flex-col gap-2'>
       <TypographyH4>
-        You have {correct} correct and {incorrect} answers
+        You have {correct} correct and {incorrect} incorrect answers
       </TypographyH4>
       <div className='flex flex-col gap-2'>
         {trainingList.map((question, index) => (
@@ -38,8 +38,13 @@ const ResultTraining = ({
                   : 'bg-red-300 dark:bg-red-900'
               )}
             >
-              {question.answers.join('')}
+              {question.answers.join(' | ')}
             </div>
+            {!question.isUserAnswerCorrect && (
+              <div className='w-full p-1 text-center text-sm'>
+                {question.correctAnswer}
+              </div>
+            )}
           </div>
         ))}
         <TypographyH4 className='text-center'>Good luck!</TypographyH4>
