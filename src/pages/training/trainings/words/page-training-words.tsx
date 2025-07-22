@@ -32,7 +32,6 @@ const PageTrainingWords = () => {
   const progress = Math.round(
     (100 / (numberOfTrainingWords + 1)) * (currentQuestion + 1)
   )
-  console.log(progress)
 
   const handleClose = () => {
     navigate(ROUTES.TRAINING)

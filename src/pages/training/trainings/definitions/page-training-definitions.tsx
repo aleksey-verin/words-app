@@ -20,30 +20,29 @@ const PageTrainingDefinitions = () => {
   const navigate = useNavigate()
   const { trainingList } = useAppSelector(selectorUserTrainingSlice)
 
-  const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [correctAnswers, setCorrectAnswers] = useState(0)
-  const [incorrectAnswers, setIncorrectAnswers] = useState(0)
+  const [currentQuestionCount, setCurrentQuestionCount] = useState<number>(0)
+  const [correctAnswersCount, setCorrectAnswersCount] = useState<number>(0)
+  const [incorrectAnswersCount, setIncorrectAnswersCount] = useState<number>(0)
   const [showResult, setShowResult] = useState(false)
 
   const numberOfTrainingWords = trainingList.length
-  const question = trainingList[currentQuestion]
-  const isTrainingFinished = currentQuestion >= numberOfTrainingWords - 1
+  const question = trainingList[currentQuestionCount]
+  const isTrainingFinished = currentQuestionCount >= numberOfTrainingWords - 1
   const progress = Math.round(
-    (100 / (numberOfTrainingWords + 1)) * (currentQuestion + 1)
+    (100 / (numberOfTrainingWords + 1)) * (currentQuestionCount + 1)
   )
-  console.log(progress)
 
   const handleClose = () => {
     navigate(ROUTES.TRAINING)
   }
 
   const handleAnswer = (isCorrect: boolean) => {
-    setCurrentQuestion(currentQuestion + 1)
+    setCurrentQuestionCount(currentQuestionCount + 1)
     if (isCorrect) {
-      dispatch(setCorrectAnswerInTrainingList(currentQuestion))
-      setCorrectAnswers(correctAnswers + 1)
+      dispatch(setCorrectAnswerInTrainingList(currentQuestionCount))
+      setCorrectAnswersCount(correctAnswersCount + 1)
     } else {
-      setIncorrectAnswers(incorrectAnswers + 1)
+      setIncorrectAnswersCount(incorrectAnswersCount + 1)
     }
     if (isTrainingFinished) {
       setShowResult(true)
@@ -65,8 +64,8 @@ const PageTrainingDefinitions = () => {
         </TypographyH4>
         {showResult ? (
           <ResultTraining
-            correct={correctAnswers}
-            incorrect={incorrectAnswers}
+            correct={correctAnswersCount}
+            incorrect={incorrectAnswersCount}
             trainingList={trainingList}
           />
         ) : (
@@ -92,7 +91,7 @@ const PageTrainingDefinitions = () => {
           </div>
         )}
       </div>
-      <FooterTraining correct={correctAnswers} incorrect={incorrectAnswers} />
+      <FooterTraining correct={correctAnswersCount} incorrect={incorrectAnswersCount} />
     </LayoutTraining>
   )
 }
